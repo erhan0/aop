@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<!-- NOTE: This nuspec is structured this way to get around an alledged bug in NuGet, in which we cannot use "..\Path" to specify the file sources -->
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SheepAspect</id>
+    <version>0.3.0.15</version>
+    <authors>Hendry Luk</authors>
+    <owners>Hendry Luk</owners>
+    <language>en-US</language>
+    <licenseUrl>http://sheepaspect.codeplex.com/license</licenseUrl>
+    <projectUrl>http://sheepaspect.codeplex.com</projectUrl>
+    <iconUrl>http://download.codeplex.com/Download?ProjectName=sheepjax&amp;DownloadId=282464</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>SheepAspect is a static AOP framework for .Net platform that is heavily inspired by AspectJ.</summary>
+    <description>
+      SheepAspect is an AOP framework for .Net platform that is heavily inspired by AspectJ. It statically weaves target assemblies as a post-compiler task, while maintaining debugability.&#10;
+      - Support for Visual Studio 2012&#10;
+      - Bug fixes&#10;
+      &#10;
+      Whats new in Preview-3:&#10;
+        - DeclareMixin advice&#10;
+        - DeclareAttributes advice&#10;
+        - IAspectAware (OnAspectCreated interception)&#10;
+        - More complete set of pointcuts&#10;
+        - Intellisense API documentation&#10;
+        - Accept binaries without pdb
+    </description>
+    <tags>AOP Weave Post-compiler Bytecode-Instrumentation Post-Compile Interceptor Plugin Dependency-Injection</tags>
+    <dependencies>
+      <dependency id="Mono.Cecil" version="0.9.5.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="SheepAspect\bin\Release\Antlr3.Runtime.dll" target="Lib" />
+    <file src="SheepAspect\bin\Release\SheepAspect.dll" target="Lib" />
+    <file src="SheepAspect\bin\Release\SheepAspect.XML" target="Lib" />
+    <file src="SheepAspect.Tasks\bin\Release\SheepAspect.Tasks.dll" target="Tools" />
+    <file src="SheepAspectQueryAnalyzer\bin\Release\SheepAspectQueryAnalyzer.exe" target="Tools" />
+    <file src="NugetItems\*\**\*.*" target="" />
+    <file src="SheepAspect\SheepAspectConfig.xsd" target="Content" />
+  </files>
+</package>

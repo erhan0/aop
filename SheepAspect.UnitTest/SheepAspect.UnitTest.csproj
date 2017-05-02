@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{94912F05-4DD9-465B-8EC4-649895C817E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SheepAspect.UnitTest</RootNamespace>
+    <AssemblyName>SheepAspect.UnitTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <CodeContractsPlatformPath />
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\ReferenceAssemblies\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime.Debug">
+      <HintPath>..\ReferenceAssemblies\Antlr3.Runtime.Debug.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=1.5.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentAssertions.1.5.0.0\Lib\.NetFramework 4.0\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\ReferenceAssemblies\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core">
+      <HintPath>..\ReferenceAssemblies\NUnit-2.6.0.11340\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceAssemblies\NUnit-2.6.0.11340\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework">
+      <HintPath>..\ReferenceAssemblies\NUnit-2.6.0.11340\pnunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AspectImplTests\AttributiveAspectTest.cs" />
+    <Compile Include="Blah.cs" />
+    <Compile Include="ConfigurationTests\XmlConfigurationTest.cs" />
+    <Compile Include="DeclareAttributesTests\DeclareAttributeStub.cs" />
+    <Compile Include="DeclareAttributesTests\MyTestAttribute.cs" />
+    <Compile Include="DeclareAttributesTests\PropertyAttributesTest.cs" />
+    <Compile Include="DeclareAttributesTests\MethodAttributesTest.cs" />
+    <Compile Include="ImplementInterfaceTests\ImplementInterfaceTest.cs" />
+    <Compile Include="ImplementInterfaceTests\TestLambda.cs" />
+    <Compile Include="LifecycleTests\PerThisTest.cs" />
+    <Compile Include="LifecycleTests\InstructionLevelPerFlowTest.cs" />
+    <Compile Include="LifecycleTests\MethodLevelPerFlowTest.cs" />
+    <Compile Include="LifecycleTests\Helper\LifecycleTestBase.cs" />
+    <Compile Include="LifecycleTests\TransientTest.cs" />
+    <Compile Include="LifecycleTests\Helper\LifecycleTestAspect.cs" />
+    <Compile Include="LifecycleTests\Helper\LifecycleTestTarget.cs" />
+    <Compile Include="LifecycleTests\SingletonTest.cs" />
+    <Compile Include="PointcutTests\InstructionPointcutTest.cs" />
+    <Compile Include="ProviderTests\AttributiveProviderTest.cs" />
+    <Compile Include="TestHelper\AspectTestBase.cs" />
+    <Compile Include="AroundAdviceTests\CallMethodAspectTest.cs" />
+    <Compile Include="AroundAdviceTests\FieldSetAspectTest.cs" />
+    <Compile Include="AroundAdviceTests\FieldGetAspectTest.cs" />
+    <Compile Include="AroundAdviceTests\PropertySetAspectTest.cs" />
+    <Compile Include="AroundAdviceTests\PropertyGetAspectTest.cs" />
+    <Compile Include="AroundAdviceTests\MethodAspectTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaqlTests\DumpASTVisitor.cs" />
+    <Compile Include="SaqlTests\SaqlParsingTest.cs" />
+    <Compile Include="SaqlTests\TestHelper.cs" />
+    <Compile Include="Target\SomeClass.cs" />
+    <Compile Include="TestHelper\AssertionExtensions.cs" />
+    <Compile Include="TestHelper\MockAspectProvider.cs" />
+    <Compile Include="TestHelper\TestAttributes.cs" />
+    <Compile Include="TestHelper\WeaveTestHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SheepAspect.Tasks\SheepAspect.Tasks.csproj">
+      <Project>{7AE91132-4991-46D0-8AD1-F2BD5B334C0C}</Project>
+      <Name>SheepAspect.Tasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SheepAspect\SheepAspect.csproj">
+      <Project>{CE5B9AF0-03CA-444E-B98C-6AF36696A708}</Project>
+      <Name>SheepAspect</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ConfigurationTests\TestCfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

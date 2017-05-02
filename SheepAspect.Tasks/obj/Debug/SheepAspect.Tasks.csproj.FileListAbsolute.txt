@@ -1,0 +1,12 @@
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\SheepAspectConfig.xsd
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\SheepAspect.Tasks.dll
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\SheepAspect.Tasks.pdb
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\Antlr3.Runtime.dll
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\Mono.Cecil.dll
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\Mono.Cecil.Rocks.dll
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\Mono.Cecil.Pdb.dll
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\SheepAspect.pdb
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\obj\Debug\SheepAspect.Tasks.csprojResolveAssemblyReference.cache
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\obj\Debug\SheepAspect.Tasks.dll
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\obj\Debug\SheepAspect.Tasks.pdb
+C:\Users\erhan\Downloads\SheepAspectProject\SheepAspect.Tasks\bin\Debug\SheepAspect.dll

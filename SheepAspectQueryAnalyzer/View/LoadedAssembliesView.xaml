@@ -1,0 +1,41 @@
+﻿<Window x:Class="SheepAspectQueryAnalyzer.View.LoadedAssembliesView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Assemblies" Height="300" Width="500">
+
+    <DockPanel>
+		<DockPanel DockPanel.Dock="Right">
+			<Grid Width="100" Margin="4">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="30" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="30" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Button
+					Command="{Binding Path=AddCommand.Command}"
+					Content="{Binding Path=AddCommand.DisplayName}"
+					Grid.Row="2" />
+				<Button
+					Command="{Binding Path=DoneCommand.Command}"
+					Content="{Binding Path=DoneCommand.DisplayName}"
+					Grid.Row="4" />
+			</Grid>
+		</DockPanel>
+        <DataGrid ItemsSource="{Binding Path=Assemblies}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Assembly File" Binding="{Binding FileName}" Width="*" />
+                <DataGridTemplateColumn Header="Remove">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding Path=RemoveCommand}"><TextBlock Text="Remove" /></Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+	</DockPanel>
+</Window>

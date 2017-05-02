@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:ViewModel="clr-namespace:SheepAspectQueryAnalyzer.ViewModel" 
+					xmlns:vw="clr-namespace:SheepAspectQueryAnalyzer.View" 
+					>
+    
+    <BitmapImage x:Key="CloseImage" UriSource="../Resources/Close.png" />
+    
+	<!-- Template to link QueryWorkspaceVm with QueryWorkspaceView -->
+	<DataTemplate DataType="{x:Type ViewModel:QueryWorkspaceVm}">
+		<vw:QueryWorkspaceView />
+	</DataTemplate>
+
+	<!-- Link QueryOutputVm with QueryOutputView -->
+	<DataTemplate DataType="{x:Type ViewModel:QueryOutputVm}">
+		<vw:QueryOutputView />
+	</DataTemplate>
+
+    <!-- Link QueryResultVm with QueryResultView -->
+    <DataTemplate DataType="{x:Type ViewModel:QueryResultVm}">
+        <vw:QueryResultView />
+    </DataTemplate>
+
+    <DataTemplate x:Key="CommandButton">
+		<Button Command="{Binding Path=Command}">
+			<TextBlock Text="{Binding Path=DisplayName}" />
+		</Button>
+	</DataTemplate>
+
+	<!-- Template for Query Tab -->
+	<DataTemplate x:Key="ClosableTabItemTemplate">
+		<DockPanel>
+            <TextBlock Margin="10,0,-6,0"
+				 DockPanel.Dock="Right" VerticalAlignment="Center">
+                <Hyperlink TextDecorations="{x:Null}" Command="{Binding Path=CloseCommand}">
+                    <Image Source="{StaticResource ResourceKey=CloseImage}" Width="12" Height="12" />
+                </Hyperlink>
+            </TextBlock>
+            <ContentPresenter 
+                Content="{Binding Path=DisplayName}" 
+				VerticalAlignment="Center" 
+			/>
+		</DockPanel>
+	</DataTemplate>
+
+    
+    
+    <ControlTemplate x:Key="GridHeaderedContentControl" TargetType="{x:Type HeaderedContentControl}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ContentControl Content="{TemplateBinding Header}" Grid.Row="0" />
+            <ContentControl Content="{TemplateBinding Content}" Grid.Row="1" />
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

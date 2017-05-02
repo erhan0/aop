@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CE5B9AF0-03CA-444E-B98C-6AF36696A708}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SheepAspect</RootNamespace>
+    <AssemblyName>SheepAspect</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SheepAspect.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceAssemblies\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.0\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aspects\OnFieldContactAttribute.cs" />
+    <Compile Include="Aspects\OnMemberBoundaryAttribute.cs" />
+    <Compile Include="Aspects\AttributeAspectFactory.cs" />
+    <Compile Include="Aspects\InterceptorAspectBase.cs" />
+    <Compile Include="Driver.cs" />
+    <Compile Include="Exceptions\InvalidTypeException.cs" />
+    <Compile Include="Framework\AspectPerThisTypeAttribute.cs" />
+    <Compile Include="Framework\SelectPropertyMethodsAttribute.cs" />
+    <Compile Include="Framework\DeclareAttributesAttribute.cs" />
+    <Compile Include="Framework\DeclareMixinAttribute.cs" />
+    <Compile Include="Framework\IAspectAware.cs" />
+    <Compile Include="Framework\SelectConstructorsAttribute.cs" />
+    <Compile Include="Framework\UseFactoryAttribute.cs" />
+    <Compile Include="Framework\UseFactoryAttributeBase.cs" />
+    <Compile Include="Framework\AttributiveAspectProvider.cs" />
+    <Compile Include="Compile\XmlCompilerSettings.cs" />
+    <Compile Include="Core\PerThisLifecycleAspect.cs" />
+    <Compile Include="DeclareAttributeAdvising\DeclareAttributesAdvice.cs" />
+    <Compile Include="Exceptions\InterfaceAlreadyImplementedException.cs" />
+    <Compile Include="Exceptions\PointcutDefinitionException.cs" />
+    <Compile Include="Exceptions\SheepAspectConfigException.cs" />
+    <Compile Include="Exceptions\SheepAspectRuntimeException.cs" />
+    <Compile Include="Exceptions\UnsupportedJointpointException.cs" />
+    <Compile Include="Helpers\CecilExtensions\GenericsRepairerExtensions.cs" />
+    <Compile Include="Compile\AttributiveAspectDiscovery.cs" />
+    <Compile Include="Compile\CompilerSettings.cs" />
+    <Compile Include="Compile\IAspectDiscovery.cs" />
+    <Compile Include="Compile\PointcutQueryEngine.cs" />
+    <Compile Include="Core\AdviseAttribute.cs" />
+    <Compile Include="Helpers\CecilExtensions\PropertyExtension.cs" />
+    <Compile Include="Helpers\CecilExtensions\TypeDefinitionExtensions.cs" />
+    <Compile Include="Core\AdviceBase.cs" />
+    <Compile Include="AroundAdvising\AroundAdvice.cs" />
+    <Compile Include="Compile\AspectCompiler.cs" />
+    <Compile Include="Core\AspectDefinition.cs" />
+    <Compile Include="Framework\AspectAttribute.cs" />
+    <Compile Include="Core\IAdviceProvider.cs" />
+    <Compile Include="Core\IAspectProvider.cs" />
+    <Compile Include="Core\IPointcutProvider.cs" />
+    <Compile Include="Core\IAdvice.cs" />
+    <Compile Include="Framework\SingletonAspectAttribute.cs" />
+    <Compile Include="Framework\AspectPerThisAttribute.cs" />
+    <Compile Include="Framework\SelectTypesAttribute.cs" />
+    <Compile Include="Framework\SelectFieldsAttribute.cs" />
+    <Compile Include="Core\ILifecycleProvider.cs" />
+    <Compile Include="Helpers\ReflectionHelper.cs" />
+    <Compile Include="MixinsAdvising\AddMemberAdvice.cs" />
+    <Compile Include="MixinsAdvising\DeclareMixinFromFieldAdvice.cs" />
+    <Compile Include="MixinsAdvising\DeclareMixinAdvice.cs" />
+    <Compile Include="MixinsAdvising\DeclareMixinFromMethodAdvice.cs" />
+    <Compile Include="MixinsAdvising\MixinsImplementationBinding.cs" />
+    <Compile Include="Pointcuts\IConstructorPointcut.cs" />
+    <Compile Include="Pointcuts\Impl\ConstructorPointcut.cs" />
+    <Compile Include="Pointcuts\IMemberPointcut.cs" />
+    <Compile Include="Pointcuts\IPropertyPointcut.cs" />
+    <Compile Include="Pointcuts\Impl\MemberBasePointcut.cs" />
+    <Compile Include="Pointcuts\Impl\PropertyMethodPointcut.cs" />
+    <Compile Include="Runtime\Lifecycles\PerThisTypeAspectLifecycle.cs" />
+    <Compile Include="Runtime\Lifecycles\PerThisAspectLifecycle.cs" />
+    <Compile Include="Pointcuts\ICanRef.cs" />
+    <Compile Include="Runtime\MemberJoinPointBase.cs" />
+    <Compile Include="Exceptions\IncorrectPointcutRefTypeException.cs" />
+    <Compile Include="Core\AspectFactory.cs" />
+    <Compile Include="Framework\AdviseAttribute.cs" />
+    <Compile Include="Framework\AroundAttribute.cs" />
+    <Compile Include="Framework\SelectCallMethodsAttribute.cs" />
+    <Compile Include="Framework\SelectSetFieldsAttribute.cs" />
+    <Compile Include="Framework\SelectGetFieldsAttribute.cs" />
+    <Compile Include="Framework\AspectPerCFlowAttribute.cs" />
+    <Compile Include="Framework\PointcutAttribute.cs" />
+    <Compile Include="Framework\SaqlPointcutAttribute.cs" />
+    <Compile Include="Framework\SelectMethodsAttribute.cs" />
+    <Compile Include="Framework\SelectPropertiesAttribute.cs" />
+    <Compile Include="Framework\AspectTransientAttribute.cs" />
+    <Compile Include="Core\SimpleAspectFactory.cs" />
+    <Compile Include="Runtime\PerFlowLifecycleAspect.cs" />
+    <Compile Include="Runtime\PropertyJointPoint.cs" />
+    <Compile Include="Runtime\SetFieldJoinPoint.cs" />
+    <Compile Include="Runtime\GetFieldJoinPoint.cs" />
+    <Compile Include="Runtime\CallMethodJoinPoint.cs" />
+    <Compile Include="Runtime\CallJoinPoint.cs" />
+    <Compile Include="Runtime\PropertySetJoinPoint.cs" />
+    <Compile Include="Runtime\Lifecycles\PerCFlowAspectLifecycle.cs" />
+    <Compile Include="Core\IAspectLifecycle.cs" />
+    <Compile Include="Runtime\Lifecycles\SingletonAspectLifecycle.cs" />
+    <Compile Include="Runtime\Lifecycles\TransientAspectLifecycle.cs" />
+    <Compile Include="Runtime\MethodJoinPoint.cs" />
+    <Compile Include="Runtime\PropertyGetJoinPoint.cs" />
+    <Compile Include="Exceptions\BytecodeWeavingException.cs" />
+    <Compile Include="Exceptions\UnsupportedPointcutToAdviseException.cs" />
+    <Compile Include="Exceptions\InvalidAdviceSignatureException.cs" />
+    <Compile Include="Exceptions\PointcutNotFoundException.cs" />
+    <Compile Include="Exceptions\SheepAspectException.cs" />
+    <Compile Include="Exceptions\UnrecognizedInstructionException.cs" />
+    <Compile Include="LifecycleAdvising\PerThisLifecycleWeaver.cs" />
+    <Compile Include="LifecycleAdvising\PerThisAdvice.cs" />
+    <Compile Include="LifecycleAdvising\PerFlowAdvice.cs" />
+    <Compile Include="Pointcuts\Impl\GetFieldPointcut.cs" />
+    <Compile Include="Pointcuts\Impl\SetFieldPointcut.cs" />
+    <Compile Include="Pointcuts\Descriptions\GetFieldDescription.cs" />
+    <Compile Include="Pointcuts\Descriptions\SetFieldDescription.cs" />
+    <Compile Include="Pointcuts\Descriptions\CallMethodDescription.cs" />
+    <Compile Include="Pointcuts\Descriptions\IInstructionDescription.cs" />
+    <Compile Include="Pointcuts\Descriptions\InstructionDescriptor.cs" />
+    <Compile Include="Pointcuts\Impl\MethodPointcut.cs" />
+    <Compile Include="Pointcuts\Impl\FieldPointcut.cs" />
+    <Compile Include="Pointcuts\IFieldPointcut.cs" />
+    <Compile Include="Pointcuts\Impl\InstructionPointcut.cs" />
+    <Compile Include="Pointcuts\IMethodPointcut.cs" />
+    <Compile Include="Core\IPointcut.cs" />
+    <Compile Include="Pointcuts\ITypePointcut.cs" />
+    <Compile Include="Pointcuts\IWhereLiteral.cs" />
+    <Compile Include="Pointcuts\IWhereAny.cs" />
+    <Compile Include="Pointcuts\Impl\CallMethodPointcut.cs" />
+    <Compile Include="Pointcuts\Impl\PointcutBase.cs" />
+    <Compile Include="Pointcuts\Impl\PropertyPointcut.cs" />
+    <Compile Include="Pointcuts\Impl\StringCriteria.cs" />
+    <Compile Include="Pointcuts\Impl\TypePointcut.cs" />
+    <Compile Include="Runtime\AdviceCallback.cs" />
+    <Compile Include="Runtime\AdviceInvoker.cs" />
+    <Compile Include="Runtime\Lifecycles\IMayHaveAspect.cs" />
+    <Compile Include="Runtime\PerObjectAspectStore.cs" />
+    <Compile Include="Runtime\AspectRuntime.cs" />
+    <Compile Include="Runtime\IJointPoint.cs" />
+    <Compile Include="Saql\Ast\AndCompoundNode.cs" />
+    <Compile Include="Saql\Ast\ArrayValueNode.cs" />
+    <Compile Include="Saql\Ast\CriteriaNode.cs" />
+    <Compile Include="Saql\Ast\Generated\PointcutLexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Saql\Ast\Generated\PointcutParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Saql\Ast\Generated\PointcutWalker.cs" />
+    <Compile Include="Saql\Ast\IPointcutValueNode.cs" />
+    <Compile Include="Saql\Ast\LiteralValueNode.cs" />
+    <Compile Include="Saql\Ast\OrCompoundNode.cs" />
+    <Compile Include="Saql\Ast\PointcutLexer.cs" />
+    <Compile Include="Saql\Ast\PointcutNodeBase.cs" />
+    <Compile Include="Saql\Ast\PointcutParser.cs" />
+    <Compile Include="Saql\Ast\PointcutRefNode.cs" />
+    <Compile Include="Saql\Ast\PointcutWalker.cs" />
+    <Compile Include="Saql\Exceptions\UnexpectedTokenSaqlException.cs" />
+    <Compile Include="Saql\Exceptions\UnkonwnCriteriaSaqlException.cs" />
+    <Compile Include="Saql\Exceptions\MissingArgumentSaqlException.cs" />
+    <Compile Include="Saql\Exceptions\SaqlException.cs" />
+    <Compile Include="Saql\Exceptions\UnsupportedSaqlConstructException.cs" />
+    <Compile Include="Saql\PointcutBuilder.cs" />
+    <Compile Include="AroundAdvising\AroundInstructionWeaver.cs" />
+    <Compile Include="AroundAdvising\AroundPropertyGetWeaver.cs" />
+    <Compile Include="AroundAdvising\AroundPropertySetWeaver.cs" />
+    <Compile Include="Core\MethodWeaverBase.cs" />
+    <Compile Include="LifecycleAdvising\PerFlowLifecycleWeaver.cs" />
+    <Compile Include="Helpers\CecilExtensions\InstructionExtension.cs" />
+    <Compile Include="Helpers\CollectionHelper.cs" />
+    <Compile Include="Helpers\StringExtensions.cs" />
+    <Compile Include="Helpers\CecilExtensions\ILProcessorExtensions.cs" />
+    <Compile Include="Helpers\CecilExtensions\MethodDefinitionExtensions.cs" />
+    <Compile Include="Helpers\CecilExtensions\ModuleDefinitionExtensions.cs" />
+    <Compile Include="AroundAdvising\AroundMethodWeaver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\IWeaver.cs" />
+    <Compile Include="AroundAdvising\AroundWeaverBase.cs" />
+    <Compile Include="TestSupport\JointPoints.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Lifecycles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Saql\Ast\Generated\Pointcut.tokens" />
+    <None Include="Saql\Ast\Generated\PointcutWalker.tokens" />
+    <None Include="Saql\Ast\Pointcut.g" />
+    <None Include="Saql\Ast\PointcutWalker.g" />
+    <EmbeddedResource Include="SheepAspectConfig.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

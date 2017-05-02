@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="SheepAspectQueryAnalyzer.View.QueryWorkspaceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="360" d:DesignWidth="492">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="CommonResources.xaml" />
+				<ResourceDictionary>
+					<!--Style for borders -->
+					<Style x:Key="BorderStyle" TargetType="{x:Type Border}">
+						<Setter Property="Background" Value="WhiteSmoke" />
+						<Setter Property="BorderBrush" Value="LightGray" />
+						<Setter Property="BorderThickness" Value="1" />
+						<Setter Property="CornerRadius" Value="5" />
+						<Setter Property="SnapsToDevicePixels" Value="True" />
+					</Style>
+				</ResourceDictionary>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid Margin="4">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="250" />
+		</Grid.ColumnDefinitions>
+        
+		<Border 
+			Grid.Column="0" 
+			Style="{StaticResource BorderStyle}"
+			>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="150" />                    
+                </Grid.RowDefinitions>
+            
+			    <TextBox Name="txtQuery" 
+                        Grid.Row="0" 
+					    AcceptsReturn="True"
+                        FontFamily="Consolas"
+						Text="{Binding Path=QueryText, UpdateSourceTrigger=PropertyChanged}" />
+
+                <GridSplitter 
+                    ResizeDirection="Rows"
+                    Grid.Row="1" 
+                    Height="3"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="0"
+			        />
+
+                <HeaderedContentControl
+                        Grid.Row="2"
+					    Header="Output"
+					    VerticalAlignment="Stretch"
+                        Template="{DynamicResource GridHeaderedContentControl}"
+					    >
+                    <ContentPresenter Content="{Binding Path=Output}" />
+                </HeaderedContentControl>
+            </Grid>
+        </Border>
+        
+        <GridSplitter 
+            ResizeDirection="Columns"
+            Grid.Column="1" 
+            Width="4"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Margin="0"
+			/>
+
+		<Border 
+            Grid.Column="2" 
+			Style="{StaticResource BorderStyle}"
+			>
+            <HeaderedContentControl Header="Result" Template="{DynamicResource GridHeaderedContentControl}">
+                <ContentPresenter Content="{Binding Path=Result}" />
+            </HeaderedContentControl>
+        </Border>
+	</Grid>
+
+</UserControl>

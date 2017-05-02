@@ -1,0 +1,46 @@
+﻿<Window x:Class="SheepAspectQueryAnalyzer.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SheepAspect Query Analyzer" Height="446" Width="629">
+	<Window.Resources>
+		<ResourceDictionary Source="CommonResources.xaml" />
+	</Window.Resources>
+	
+	<DockPanel>
+		<DockPanel DockPanel.Dock="Top" KeyboardNavigation.TabNavigation="None">
+			<Menu KeyboardNavigation.TabNavigation="Cycle">
+				<MenuItem Header="_File">
+					<MenuItem Header="Target _DLLs" Command="{Binding Path=ShowTargetAssembliesCommand}" />
+					<MenuItem Header="E_xit" Command="{Binding Path=CloseCommand}" />
+				</MenuItem>
+                <MenuItem Header="_Window">
+                    <MenuItem Header="New _Query Tab" Command="{Binding Path=NewQueryCommand}" />
+                    <MenuItem Header="_Close All Tabs" Command="{Binding Path=CloseAllQueriesCommand}" />
+                </MenuItem>
+			</Menu>
+		</DockPanel>
+		<DockPanel DockPanel.Dock="Top">
+			<ToolBar ItemsSource="{Binding Path=ToolbarCommands}">
+				<ToolBar.ItemTemplate>
+					<DataTemplate>
+						<Button Command="{Binding Path=Command}" Margin="5,5,5,5" Width="75">
+							<DockPanel>
+								<DockPanel DockPanel.Dock="Top" Height="32">
+									<Image Source="{Binding Path=IconImageSource}"/>
+								</DockPanel>
+								<TextBlock Text="{Binding Path=DisplayName}" />
+							</DockPanel>
+						</Button>
+					</DataTemplate>
+				</ToolBar.ItemTemplate>
+			</ToolBar>
+		</DockPanel>
+		<TabControl
+		    IsSynchronizedWithCurrentItem="True" 
+		    ItemsSource="{Binding Path=Workspaces}" 
+		    ItemTemplate="{StaticResource ClosableTabItemTemplate}"
+		    Margin="4"
+		    />
+	</DockPanel>
+	
+</Window>
