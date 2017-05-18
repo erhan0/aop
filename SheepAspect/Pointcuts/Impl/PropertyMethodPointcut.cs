@@ -5,16 +5,16 @@ namespace SheepAspect.Pointcuts.Impl
 {
     public class PropertyMethodPointcut: PropertyPointcut, IMethodPointcut
     {
-        private bool _requireGetter;
-        private bool _requireSetter;
+        private bool requireGetter;
+        private bool requireSetter;
 
         public override void WhereGetter()
         {
-            _requireGetter = true;
+            requireGetter = true;
         }
         public override void WhereSetter()
         {
-            _requireSetter = true;
+            requireSetter = true;
         }
 
         public bool Match(MethodDefinition method)
@@ -24,7 +24,7 @@ namespace SheepAspect.Pointcuts.Impl
 
         private bool MatchAccessorType(MethodDefinition method)
         {
-            return (!_requireGetter || method.IsGetter) && (!_requireSetter || method.IsSetter);
+            return (!requireGetter || method.IsGetter) && (!requireSetter || method.IsSetter);
         }
 
         public bool MatchFull(MethodDefinition method)

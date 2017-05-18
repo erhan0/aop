@@ -30,10 +30,14 @@ namespace SheepAspect.Compile
             BaseDirectory = Path.GetDirectoryName(file);
 
             foreach (var str in GetFiles(root.XPathSelectElement("t:aspects/t:assemblies", ns), ns))
+            {
                 AspectAssemblyFiles.Add(str);
+            }
 
             foreach (var str in GetFiles(root.XPathSelectElement("t:weave/t:assemblies", ns), ns))
+            {
                 TargetAssemblyFiles.Add(str);
+            }
         }
 
         private IEnumerable<string> GetFiles(XNode assemblies, XmlNamespaceManager ns)

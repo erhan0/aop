@@ -10,33 +10,27 @@ namespace SheepAspect.AroundAdvising
 {
     public class AroundMethodWeaver: AroundWeaverBase
     {
-        private MethodDefinition _ccMethod;
+        private MethodDefinition ccMethod;
 
         public AroundMethodWeaver(MethodDefinition targetMethod, AroundAdvice advice, int priority): base(targetMethod, advice, priority)
         {
             
         }
 
-        protected override string GetAdviceTypeName()
-        {
-            return "Around Method";
-        }
+        protected override string AdviceTypeName { get { return "Around Method"; } }
 
-        protected override Type GetJoinPointType()
-        {
-            return typeof (MethodJointPoint);
-        }
+        protected override Type JoinPointType { get { return typeof(MethodJointPoint); } }
 
         protected override void DefineMembers()
         {
             base.DefineMembers();
-            _ccMethod = new MethodDefinition(JpName + "$TargetMethod", Method.Attributes, Method.ReturnType) { IsPrivate = true };
+            ccMethod = new MethodDefinition(jpName + "$TargetMethod", method.Attributes, method.ReturnType) { IsPrivate = true };
 
-            Method.GenericParameters.TransferItemsTo(_ccMethod.GenericParameters);
-            foreach (var p in _ccMethod.GenericParameters)
+            method.GenericParameters.TransferItemsTo(ccMethod.GenericParameters);
+            foreach (var p in ccMethod.GenericParameters)
             {
-                p.GetType().GetField("owner", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(p, _ccMethod);
-                Method.GenericParameters.Add(new GenericParameter(p.Name, Method));
+                p.GetType().GetField("owner", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(p, ccMethod);
+                method.GenericParameters.Add(new GenericParameter(p.Name, method));
             }
         }
 
@@ -57,64 +51,82 @@ namespace SheepAspect.AroundAdvising
 
         protected override void CallbackMethodBody(ILProcessor il, ParameterDefinition thisInstance, ParameterDefinition target, ParameterDefinition args)
         {
-            if (!_ccMethod.IsStatic)
+            if (!ccMethod.IsStatic)
+            {
                 il.Append(OpCodes.Ldarg, thisInstance);
-            for(var i=0; i<_ccMethod.Parameters.Count; i++)
+            }
+
+            for (var i=0; i<ccMethod.Parameters.Count; i++)
             {
                 il.Append(OpCodes.Ldarg, args);
                 il.Append(OpCodes.Ldc_I4, i);
                 il.Append(OpCodes.Ldelem_Ref);
-                var type = _ccMethod.Parameters[i].ParameterType;
+                var type = ccMethod.Parameters[i].ParameterType;
                 if (type.IsValueType)
+                {
                     il.Append(OpCodes.Unbox_Any, type);
+                }
             }
 
-            il.Append(OpCodes.Call, _ccMethod.MakeHostInstanceGeneric(JpThisGenericParams).MakeGenerics(JpMethodGenericParams));
-            if (_ccMethod.ReturnsVoid())
+            il.Append(OpCodes.Call, ccMethod.MakeHostInstanceGeneric(JpThisGenericParams).MakeGenerics(JpMethodGenericParams));
+            if (ccMethod.ReturnsVoid())
+            {
                 il.Append(OpCodes.Ldnull);
-            else if (_ccMethod.ReturnType.IsValueType)
-                il.Append(OpCodes.Box, _ccMethod.ReturnType);
+            }
+            else if (ccMethod.ReturnType.IsValueType)
+            {
+                il.Append(OpCodes.Box, ccMethod.ReturnType);
+            }
+
             il.Append(OpCodes.Ret);
         }
 
         protected override void WeaveOriginalTarget()
         {
-            Method.Body.Instructions.TransferItemsTo(_ccMethod.Body.Instructions);
-            Method.Body.Variables.TransferItemsTo(_ccMethod.Body.Variables);
-            Method.Body.ExceptionHandlers.TransferItemsTo(_ccMethod.Body.ExceptionHandlers);
+            method.Body.Instructions.TransferItemsTo(ccMethod.Body.Instructions);
+            method.Body.Variables.TransferItemsTo(ccMethod.Body.Variables);
+            method.Body.ExceptionHandlers.TransferItemsTo(ccMethod.Body.ExceptionHandlers);
             
-            var args = Method.AddLocal(typeof (object[]));
+            var args = method.AddLocal(typeof (object[]));
 
-            var il = Method.Body.GetILProcessor();
+            var il = method.Body.GetILProcessor();
             il.Append(OpCodes.Nop);
-            il.Append(OpCodes.Ldc_I4, Method.Parameters.Count);
+            il.Append(OpCodes.Ldc_I4, method.Parameters.Count);
             il.Append(OpCodes.Newarr, Module.Import(typeof(object)));
             il.Append(OpCodes.Stloc, args);
 
-            var targetParams = Method.Parameters.ToArray();
+            var targetParams = method.Parameters.ToArray();
             foreach(var p in targetParams)
             {
-                _ccMethod.Parameters.Add(p);
+                ccMethod.Parameters.Add(p);
             
                 il.Append(OpCodes.Ldloc, args);
                 il.Append(OpCodes.Ldc_I4, p.Index);
                 il.Append(OpCodes.Ldarg, p);
                 if (p.ParameterType.IsValueType)
+                {
                     il.Append(OpCodes.Box, p.ParameterType);
+                }
+
                 il.Append(OpCodes.Stelem_Ref);
             }
 
-            _ccMethod.Body.InitLocals = Method.Body.InitLocals;
-            Method.DeclaringType.Methods.Add(_ccMethod);
+            ccMethod.Body.InitLocals = method.Body.InitLocals;
+            method.DeclaringType.Methods.Add(ccMethod);
 
             il.Append(OpCodes.Ldnull); // target
             LdThis(il);
             AppendCallDispatch(il, args, GetRefThisToJpStatic());
 
-            if (Method.ReturnsVoid())
+            if (method.ReturnsVoid())
+            {
                 il.Append(OpCodes.Pop);
-            else if (Method.ReturnType.IsValueType)
-                il.Append(OpCodes.Unbox_Any, Method.ReturnType);
+            }
+            else if (method.ReturnType.IsValueType)
+            {
+                il.Append(OpCodes.Unbox_Any, method.ReturnType);
+            }
+
             il.Append(OpCodes.Ret);
         }
     }

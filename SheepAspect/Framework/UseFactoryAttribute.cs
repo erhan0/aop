@@ -1,6 +1,5 @@
 ﻿using System;
 using SheepAspect.Core;
-using SheepAspect.Runtime;
 
 namespace SheepAspect.Framework
 {

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace SheepAspect.Core
+﻿namespace SheepAspect.Core
 {
     public interface IPointcutProvider
     {

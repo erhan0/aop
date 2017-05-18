@@ -18,7 +18,9 @@ namespace SheepAspect.Runtime.Lifecycles
         public object GetAspect(IJointPoint jointPoint)
         {
             if (jointPoint.This == null)
+            {
                 return null;
+            }
 
             return _aspectByTypes.GetOrPut(jointPoint.This.GetType(), ()=> _factory(jointPoint));
         }

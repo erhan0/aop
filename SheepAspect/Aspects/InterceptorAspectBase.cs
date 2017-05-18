@@ -19,7 +19,9 @@ namespace SheepAspect.Aspects
                 Before(interception);
 
                 if (!interception.IsPrevented)
+                {
                     interception.ReturnValue = jp.Execute();
+                }
 
                 Success(jp, interception.Reset(), interception.ReturnValue);
             }
@@ -27,7 +29,9 @@ namespace SheepAspect.Aspects
             {
                 Error(jp, interception.Reset(), e);
                 if (!interception.IsPrevented)
+                {
                     throw;
+                }
             }
             finally
             {

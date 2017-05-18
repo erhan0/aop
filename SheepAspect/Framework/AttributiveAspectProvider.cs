@@ -51,7 +51,10 @@ namespace SheepAspect.Framework
         {
             var factoryAttribute = (UseFactoryAttributeBase)aspectType.GetCustomAttributes(typeof(UseFactoryAttributeBase), true).FirstOrDefault();
             if (factoryAttribute == null)
+            {
                 return DefaultFactory;
+            }
+
             return factoryAttribute.GetFactory();
         }
 
@@ -64,14 +67,19 @@ namespace SheepAspect.Framework
                     var p in
                         m.GetCustomAttributes(typeof(IPointcutProvider), true).
                             Cast<IPointcutProvider>())
+                {
                     p.RegisterPointcut(aspect, m.Name);
+                }
             });
 
             Parallel.ForEach(memberAdvices, a => a.Value.RegisterAdvice(aspect, a.Key));
 
             var lifecycleProvider = GetLifecycleProvider(type);
             if (lifecycleProvider != null)
+            {
                 lifecycleProvider.RegisterAdvices(aspect);
+            }
+
             return aspect;
         }
     }

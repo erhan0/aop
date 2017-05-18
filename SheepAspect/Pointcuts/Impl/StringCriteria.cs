@@ -7,26 +7,26 @@ namespace SheepAspect.Pointcuts.Impl
 {
     public class StringCriteria: IWhereLiteral, IWhereAny<StringCriteria>
     {
-        private readonly IList<Func<string, bool>> _filters = new List<Func<string, bool>>();
+        private readonly IList<Func<string, bool>> filters = new List<Func<string, bool>>();
         
         public void WhereLiteral(string value)
         {
-            _filters.Add(s => s.IsWildcardMatch(value));
+            filters.Add(s => s.IsWildcardMatch(value));
         }
 
         public bool Match(string str)
         {
-            return _filters.All(f=> f(str));
+            return filters.All(f=> f(str));
         }
 
         public void WhereAny(params StringCriteria[] pointcuts)
         {
-            _filters.Add(s=> pointcuts.Any(c=> c.Match(s)));
+            filters.Add(s=> pointcuts.Any(c=> c.Match(s)));
         }
 
         public void WhereNot(StringCriteria criteria)
         {
-            _filters.Add(s=> !criteria.Match(s));
+            filters.Add(s=> !criteria.Match(s));
         }
     }
 }

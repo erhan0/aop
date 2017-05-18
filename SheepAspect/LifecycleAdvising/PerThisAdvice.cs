@@ -22,9 +22,12 @@ namespace SheepAspect.LifecycleAdvising
             _aroundAdvice = new AroundAdvice(pointcuts, lifecycleAspectType.GetMethod("Bind")){Priority = 900};
         }
 
-        public override string GetFullName()
+        public override string FullName
         {
-            return string.Format("PerThis/{0}", _aspectType);
+            get
+            {
+                return string.Format("PerThis/{0}", _aspectType);
+            }
         }
 
         public override IEnumerable<IWeaver> GetWeavers(TypeDefinition type)
@@ -38,7 +41,9 @@ namespace SheepAspect.LifecycleAdvising
             {
                 //yield return new PerThisLifecycleWeaver(method.DeclaringType);
                 foreach (var weaver in _aroundAdvice.GetWeavers(method))
+                {
                     yield return weaver;
+                }
             }
         }
 
@@ -48,7 +53,9 @@ namespace SheepAspect.LifecycleAdvising
             {
                 //yield return new PerThisLifecycleWeaver(method.DeclaringType);
                 foreach (var weaver in _aroundAdvice.GetWeavers(method, instruction))
+                {
                     yield return weaver;
+                }
             }
         }
 
@@ -59,7 +66,9 @@ namespace SheepAspect.LifecycleAdvising
             {
                 //yield return new PerThisLifecycleWeaver(property.DeclaringType);
                 foreach (var weaver in _aroundAdvice.GetWeavers(property))
+                {
                     yield return weaver;
+                }
             }
         }
     }

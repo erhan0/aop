@@ -5,8 +5,8 @@ namespace SheepAspect.Compile
 {
     public class CompilerSettings
     {
-        private readonly ICollection<string> _targetAssemblyFiles = new Collection<string>();
-        private readonly ICollection<string> _aspectAssemblyFiles = new Collection<string>();
+        private readonly ICollection<string> targetAssemblyFiles = new Collection<string>();
+        private readonly ICollection<string> aspectAssemblyFiles = new Collection<string>();
 
         public CompilerSettings()
         {
@@ -15,12 +15,12 @@ namespace SheepAspect.Compile
 
         public ICollection<string> TargetAssemblyFiles
         {
-            get { return _targetAssemblyFiles; }
+            get { return targetAssemblyFiles; }
         }
 
         public ICollection<string> AspectAssemblyFiles
         {
-            get { return _aspectAssemblyFiles; }
+            get { return aspectAssemblyFiles; }
         }
 
         public string BaseDirectory { get; set; }

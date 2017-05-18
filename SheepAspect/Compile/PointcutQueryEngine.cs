@@ -2,7 +2,6 @@
 using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using SheepAspect.Core;
 using SheepAspect.Pointcuts;
 using SheepAspect.Pointcuts.Impl;
 
@@ -18,7 +17,9 @@ namespace SheepAspect.Compile
         public IEnumerable<TypeDefinition> QueryTypes(IEnumerable<TypeDefinition> types, params ITypePointcut[] pointcuts)
         {
             if(!pointcuts.Any())
+            {
                 return Enumerable.Empty<TypeDefinition>();
+            }
 
             return types.Where(t => pointcuts.Any(p => p.Match(t)));
         }
@@ -26,7 +27,9 @@ namespace SheepAspect.Compile
         public IEnumerable<FieldDefinition> QueryFields(IEnumerable<TypeDefinition> types, IFieldPointcut[] pointcuts)
         {
             if (!pointcuts.Any())
+            {
                 return Enumerable.Empty<FieldDefinition>();
+            }
 
             return from type in types
                    let typeMatchedPointcuts = pointcuts.Where(p => p.Match(type)).ToArray()
@@ -37,7 +40,9 @@ namespace SheepAspect.Compile
         public IEnumerable<MethodDefinition> QueryMethods(IEnumerable<TypeDefinition> types, params IMethodPointcut[] pointcuts)
         {
             if (!pointcuts.Any())
+            {
                 return Enumerable.Empty<MethodDefinition>();
+            }
 
             return from type in types
                    let typeMatchedPointcuts = pointcuts.Where(p => p.Match(type)).ToArray()
@@ -48,7 +53,9 @@ namespace SheepAspect.Compile
         public IEnumerable<PropertyDefinition> QueryProperties(IEnumerable<TypeDefinition> types, params IPropertyPointcut[] pointcuts)
         {
             if (!pointcuts.Any())
+            {
                 return Enumerable.Empty<PropertyDefinition>();
+            }
 
             return from type in types
                    let typeMatchedPointcuts = pointcuts.Where(p => p.Match(type)).ToArray()
@@ -59,7 +66,9 @@ namespace SheepAspect.Compile
         public IEnumerable<KeyValuePair<MethodDefinition, Instruction>> QueryInstructions(IEnumerable<TypeDefinition> types, params IInstructionPointcut[] pointcuts)
         {
             if (!pointcuts.Any())
+            {
                 return Enumerable.Empty<KeyValuePair<MethodDefinition, Instruction>>();
+            }
 
             return from type in types
                    let typeMatchedPointcuts = pointcuts.Where(p => p.Match(type)).ToArray()
@@ -70,26 +79,13 @@ namespace SheepAspect.Compile
                    select new KeyValuePair<MethodDefinition, Instruction>(method, instruction);
         }
 
-        //private IEnumerable<IGrouping<MethodDefinition, IInstructionPointcut>> GetMethodsForInstructions(TypeDefinition type, IEnumerable<IInstructionPointcut> pointcuts)
-        //{
-        //    var methods =
-        //        type.Methods.GroupBy(method => method, method => pointcuts.Where(p => p.Match(method))).Where(
-        //            g => g.Any());
-
-        //    var properties = type.Properties.GroupBy(property => property,
-        //                                             property => pointcuts.Where(p => p.Match(property)));
-
-
-        //}
-
-
         private static IEnumerable<TypeDefinition> AllTypesInHierarchy(TypeDefinition type)
         {
             yield return type;
             foreach (var t in type.NestedTypes.SelectMany(AllTypesInHierarchy))
+            {
                 yield return t;
+            }
         }
-
-        
     }
 }

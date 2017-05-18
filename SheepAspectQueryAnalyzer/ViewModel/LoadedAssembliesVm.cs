@@ -55,7 +55,9 @@ namespace SheepAspectQueryAnalyzer.ViewModel
         private void Close()
         {
             if (OnCloseRequested != null)
+            {
                 OnCloseRequested();
+            }
         }
 
         public ReadOnlyObservableCollection<AssemblyVm> Assemblies { get; private set; }

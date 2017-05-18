@@ -17,7 +17,10 @@ namespace SheepAspectQueryAnalyzer.Exceptions
         {
             var pointerBuilder = new StringBuilder(e.CharPositionInLine + 1);
             for (var i = 0; i < e.CharPositionInLine; i++)
+            {
                 pointerBuilder.Append('-');
+            }
+
             pointerBuilder.Append('^');
             return "Error at {0}:{1}.\r\n\"{2}\"\r\n-{3}".FormatWith(e.Line, e.CharPositionInLine, e.Input, pointerBuilder);
         }

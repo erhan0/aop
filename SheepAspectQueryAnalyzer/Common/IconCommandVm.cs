@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Input;
 using System.Windows.Media;
-using SheepAspectQueryAnalyzer.Properties;
 
 namespace SheepAspectQueryAnalyzer.Common
 {

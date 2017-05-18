@@ -14,26 +14,26 @@ namespace SheepAspect.Compile
 {
     public class AspectCompiler
     {
-        private readonly string[] _assemblyFiles;
-        private readonly CompilerSettings _settings;
-        private readonly PointcutQueryEngine _queryEngine;
+        private readonly string[] assemblyFiles;
+        private readonly CompilerSettings settings;
+        private readonly PointcutQueryEngine queryEngine;
 
         public Func<AssemblyNameDefinition, AssemblyNameDefinition> AssemblyNameTransform { get; set; }
         public Func<string, string> FileNameTransform { get; set; }
 
         public AspectCompiler(CompilerSettings settings)
         {
-            _settings = settings;
+            this.settings = settings;
             AssemblyNameTransform = x => x;
             FileNameTransform = x => x;
 
-            _assemblyFiles = settings.TargetAssemblyFiles.Select(a => Path.Combine(_settings.BaseDirectory, a)).ToArray();
-            _queryEngine = new PointcutQueryEngine();
+            assemblyFiles = settings.TargetAssemblyFiles.Select(a => Path.Combine(settings.BaseDirectory, a)).ToArray();
+            queryEngine = new PointcutQueryEngine();
         }
 
         public void WeaveAll()
         {
-            Weave(new AttributiveAspectDiscovery(_settings));
+            Weave(new AttributiveAspectDiscovery(settings));
         }
 
         public void Weave(IAspectDiscovery discovery)
@@ -47,11 +47,14 @@ namespace SheepAspect.Compile
             //var stopwatch = Stopwatch.StartNew();
 
             var resolver = new DefaultAssemblyResolver();
-            foreach (var dir in _assemblyFiles.Select(Path.GetDirectoryName).Distinct())
+            foreach (var dir in assemblyFiles.Select(Path.GetDirectoryName).Distinct())
+            {
                 resolver.AddSearchDirectory(dir);
+            }
+
             var readerParams = new ReaderParameters { AssemblyResolver = resolver, ReadingMode = ReadingMode.Immediate};
 
-            var asms = _assemblyFiles.Distinct().Select(a => AssemblyDefinition.ReadAssembly( a, readerParams)).ToArray();
+            var asms = assemblyFiles.Distinct().Select(a => AssemblyDefinition.ReadAssembly( a, readerParams)).ToArray();
 
             //Trace.TraceInformation("Finised reading assemblies at: " + stopwatch.ElapsedMilliseconds + "ms");
 
@@ -76,7 +79,9 @@ namespace SheepAspect.Compile
             //Trace.TraceInformation("Finised finding weaver at: " + stopwatch.ElapsedMilliseconds + "ms");
 
             foreach (var w in weavers)
+            {
                 w.Weave();
+            }
 
             //Trace.TraceInformation("Finised weaving at: " + stopwatch.ElapsedMilliseconds + "ms");
 
@@ -98,7 +103,7 @@ namespace SheepAspect.Compile
 
         private IEnumerable<IWeaver> GetWeavers(IEnumerable<AssemblyDefinition> assemblies, IEnumerable<AspectDefinition> aspects)
         {
-            var types = assemblies.SelectMany(a => _queryEngine.GetTypes(a));
+            var types = assemblies.SelectMany(a => queryEngine.GetTypes(a));
             
             foreach (var advice in aspects.SelectMany(a => a.Advices))
             {
@@ -111,37 +116,56 @@ namespace SheepAspect.Compile
                 foreach(var p in advice.Pointcuts)
                 {
                     if(p is IInstructionPointcut)
+                    {
                         instructionPointcuts.Add((IInstructionPointcut) p);
+                    }
                     else if (p is IMethodPointcut)
+                    {
                         methodPointcuts.Add((IMethodPointcut) p);
+                    }
                     else if (p is IPropertyPointcut)
+                    {
                         propertyPointcuts.Add((IPropertyPointcut)p);
+                    }
                     else if (p is IFieldPointcut)
+                    {
                         fieldPointcuts.Add((IFieldPointcut)p);
+                    }
                     else if (p is ITypePointcut)
+                    {
                         typePointcuts.Add((ITypePointcut) p);
+                    }
                 }
 
-                foreach (var weaver in _queryEngine.QueryTypes(types, typePointcuts.ToArray())
+                foreach (var weaver in queryEngine.QueryTypes(types, typePointcuts.ToArray())
                     .SelectMany(t=> advice.GetWeavers(t)))
+                {
                     yield return weaver;
+                }
 
-                foreach (var weaver in _queryEngine.QueryFields(types, fieldPointcuts.ToArray())
+                foreach (var weaver in queryEngine.QueryFields(types, fieldPointcuts.ToArray())
                     .SelectMany(f => advice.GetWeavers(f)))
+                {
                     yield return weaver;
+                }
 
-                foreach (var weaver in _queryEngine.QueryProperties(types, propertyPointcuts.ToArray())
+                foreach (var weaver in queryEngine.QueryProperties(types, propertyPointcuts.ToArray())
                     .SelectMany(p => advice.GetWeavers(p)))
+                {
                     yield return weaver;
+                }
 
-                foreach (var weaver in _queryEngine.QueryMethods(types, methodPointcuts.ToArray())
+                foreach (var weaver in queryEngine.QueryMethods(types, methodPointcuts.ToArray())
                     .SelectMany(m => advice.GetWeavers(m)))
+                {
                     yield return weaver;
+                }
 
-                foreach (var weaver in _queryEngine.QueryInstructions(types, instructionPointcuts.ToArray())
+                foreach (var weaver in queryEngine.QueryInstructions(types, instructionPointcuts.ToArray())
                     .SelectMany(i => advice.GetWeavers(i.Key, i.Value)))
+                {
                     yield return weaver;
-
+                }
             }
         }
     }

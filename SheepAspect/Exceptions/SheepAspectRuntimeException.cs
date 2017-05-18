@@ -1,5 +1,3 @@
-using System;
-
 namespace SheepAspect.Exceptions
 {
     public class SheepAspectRuntimeException: SheepAspectException

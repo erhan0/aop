@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using SheepAspect.Core;
 using SheepAspect.Helpers;
 using SheepAspect.Pointcuts;

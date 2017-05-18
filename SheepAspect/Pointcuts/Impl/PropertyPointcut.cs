@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using Mono.Cecil;
 using System.Linq;
 using SheepAspect.Helpers;
-using SheepAspect.Helpers.CecilExtensions;
 
 namespace SheepAspect.Pointcuts.Impl
 {
     public class PropertyPointcut : MemberPointcut<IPropertyPointcut, PropertyDefinition>, IPropertyPointcut
     {
-        private readonly IList<Func<PropertyDefinition, bool>> _propFilters = new List<Func<PropertyDefinition, bool>>();
+        private readonly IList<Func<PropertyDefinition, bool>> propFilters = new List<Func<PropertyDefinition, bool>>();
 
         public void WhereNot(PropertyPointcut pointcut)
         {
@@ -34,9 +33,14 @@ namespace SheepAspect.Pointcuts.Impl
         protected virtual IEnumerable<MethodDefinition> GetMethods(PropertyDefinition prop)
         {
             if (prop.GetMethod != null)
+            {
                 yield return prop.GetMethod;
+            }
+
             if (prop.SetMethod != null)
+            {
                 yield return prop.SetMethod;
+            }
         }
 
         public virtual void WhereHasCustomAttributeType(TypePointcut pointcut)

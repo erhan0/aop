@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using SheepAspect.Core;
 using SheepAspect.DeclareAttributeAdvising;
-using SheepAspect.Pointcuts.Impl;
 
 namespace SheepAspect.Framework
 {

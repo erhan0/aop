@@ -42,7 +42,9 @@ namespace SheepAspect.Pointcuts.Impl
             Where(m =>
             {
                 if (crits.Length > m.Parameters.Count)
+                {
                     return false;
+                }
 
                 return !crits.Where((t, i) => !t.MatchFull(m.Parameters[i].ParameterType.Resolve())).Any();
             });

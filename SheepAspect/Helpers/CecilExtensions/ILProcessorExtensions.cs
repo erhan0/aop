@@ -8,7 +8,9 @@ namespace SheepAspect.Helpers.CecilExtensions
         public static void AppendAll(this ILProcessor il, IEnumerable<Instruction> instructions)
         {
             foreach(var i in instructions)
+            {
                 il.Append(i);
+            }
         }
 
         public static Instruction Append(this ILProcessor il, OpCode opCode)

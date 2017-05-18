@@ -15,7 +15,10 @@ namespace SheepAspect.UnitTest.TestHelper
         {
             AspectDefinition definition;
             if (_aspects.TryGetValue(type, out definition))
+            {
                 return definition;
+            }
+
             return base.GetDefinition(type);
         }
 
@@ -23,7 +26,9 @@ namespace SheepAspect.UnitTest.TestHelper
         {
             ILifecycleProvider provider;
             if (!_lifecycleProviders.TryGetValue(aspectType, out provider))
+            {
                 provider = base.GetLifecycleProvider(aspectType);
+            }
 
             Console.WriteLine("Getting lc {0}: {1}", aspectType, provider);
             return provider;
@@ -33,7 +38,10 @@ namespace SheepAspect.UnitTest.TestHelper
         {
             IAspectFactory factory;
             if (_factories.TryGetValue(aspectType, out factory))
+            {
                 return factory;
+            }
+
             return base.GetFactory(aspectType);
         }
 

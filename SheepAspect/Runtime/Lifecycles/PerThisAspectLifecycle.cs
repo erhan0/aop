@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using SheepAspect.Core;
-using SheepAspect.Exceptions;
 
 namespace SheepAspect.Runtime.Lifecycles
 {
@@ -20,7 +19,9 @@ namespace SheepAspect.Runtime.Lifecycles
         public object GetAspect(IJointPoint jointPoint)
         {
             if (jointPoint.This == null)
+            {
                 return null;
+            }
 
             var aspect = ObjectBoundAspects.GetOrCreateValue(jointPoint.This).Get(_type);
             if (aspect == null && _autoInstantiate)

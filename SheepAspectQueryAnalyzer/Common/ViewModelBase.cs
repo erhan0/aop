@@ -26,7 +26,10 @@ namespace SheepAspectQueryAnalyzer.Common
             protected set
             {
                 if (_displayName == value)
+                {
                     return;
+                }
+
                 _displayName = value;
                 OnPropertyChanged("DisplayName");
             }
@@ -52,8 +55,10 @@ namespace SheepAspectQueryAnalyzer.Common
                 string msg = "Invalid property name: " + propertyName;
 
                 if (ThrowOnInvalidPropertyName)
+                {
                     throw new Exception(msg);
-                
+                }
+
                 Debug.Fail(msg);
             }
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SheepAspect.Exceptions;
 using SheepAspect.Helpers;
-using SheepAspect.Pointcuts;
 
 namespace SheepAspect.Core
 {
@@ -38,7 +37,10 @@ namespace SheepAspect.Core
         {
             var pointcuts = GetPointcuts(name).OfType<T>().ToArray();
             if (!pointcuts.Any())
+            {
                 throw new IncorrectPointcutRefTypeException(this, referrer, name, typeof (T));
+            }
+
             return pointcuts;
         }
 

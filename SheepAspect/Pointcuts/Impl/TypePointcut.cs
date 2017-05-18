@@ -73,14 +73,22 @@ namespace SheepAspect.Pointcuts.Impl
             Where(t =>
             {
                 if (t.Interfaces.Select(i=> i.Resolve()).Any(pointcut.MatchFull))
+                {
                     return true;
-                
-                while(true)
+                }
+
+                while (true)
                 {
                     if (pointcut.MatchFull(t))
+                    {
                         return true;
+                    }
+
                     if (t.BaseType == null)
+                    {
                         return false;
+                    }
+
                     t = t.BaseType.Resolve();
                 }
             });

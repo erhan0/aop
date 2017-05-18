@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows.Data;
 
 namespace SheepAspectQueryAnalyzer.Common
@@ -19,11 +18,15 @@ namespace SheepAspectQueryAnalyzer.Common
 
             var collectionView = CollectionViewSource.GetDefaultView(Workspaces);
             if (collectionView != null)
+            {
                 collectionView.CurrentChanged += delegate(object sender, EventArgs e)
                 {
                     if (CurrentChanged != null)
+                    {
                         CurrentChanged(sender, e);
+                    }
                 };
+            }
         }
 
         public void CloseAll()
@@ -43,7 +46,10 @@ namespace SheepAspectQueryAnalyzer.Common
             {
                 var collectionView = CollectionViewSource.GetDefaultView(Workspaces);
                 if (collectionView == null)
+                {
                     return null;
+                }
+
                 return collectionView.CurrentItem as WorkspaceVm;
             }
         }
@@ -58,25 +64,34 @@ namespace SheepAspectQueryAnalyzer.Common
 
             var collectionView = CollectionViewSource.GetDefaultView(Workspaces);
             if (collectionView != null)
+            {
                 collectionView.MoveCurrentTo(workspace);
+            }
         }
 
 
         void OnWorkspacesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
+            {
                 foreach (WorkspaceVm workspace in e.NewItems)
+                {
                     workspace.RequestClose += OnWorkspaceRequestClose;
+                }
+            }
 
             if (e.OldItems != null && e.OldItems.Count != 0)
+            {
                 foreach (WorkspaceVm workspace in e.OldItems)
+                {
                     workspace.RequestClose -= OnWorkspaceRequestClose;
+                }
+            }
         }
 
         void OnWorkspaceRequestClose(object sender, EventArgs e)
         {
-            var workspace = sender as WorkspaceVm;
-            if (workspace != null)
+            if (sender is WorkspaceVm workspace)
             {
                 workspace.Dispose();
                 _workspaces.Remove(workspace);

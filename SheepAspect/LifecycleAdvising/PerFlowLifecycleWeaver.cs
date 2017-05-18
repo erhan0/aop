@@ -13,13 +13,13 @@ namespace SheepAspect.LifecycleAdvising
     public class PerFlowLifecycleWeaver : MethodWeaverBase
     {
         private readonly ILProcessor il;
-        private readonly Instruction _instruction;
+        private readonly Instruction instruction;
         private readonly TypeReference _aspectType;
 
-        private IList<Instruction> _beforeInstructions = new List<Instruction>();
-        private IList<Instruction> _affectedInstructions = new List<Instruction>();
-        private IList<Instruction> _afterInstructions = new List<Instruction>();
-        private IInstructionDescription _iDescriptor;
+        private IList<Instruction> beforeInstructions = new List<Instruction>();
+        private IList<Instruction> affectedInstructions = new List<Instruction>();
+        private IList<Instruction> afterInstructions = new List<Instruction>();
+        private IInstructionDescription iDescriptor;
 
         /// <summary>
         /// Weavers with lower priority values will get processed earlier during compilation
@@ -33,32 +33,34 @@ namespace SheepAspect.LifecycleAdvising
 
         public PerFlowLifecycleWeaver(MethodDefinition targetMethod, Instruction instruction, Type aspectType) : base(targetMethod)
         {
-            _instruction = instruction;
+            this.instruction = instruction;
             _aspectType = Module.Import(aspectType);
             il = targetMethod.Body.GetILProcessor();
         }
 
         public override void Weave()
         {
-            if(_instruction != null)
-                _iDescriptor = InstructionDescriptor.Instance.GetDescription(_instruction);
-            
+            if(instruction != null)
+            {
+                iDescriptor = InstructionDescriptor.Instance.GetDescription(instruction);
+            }
+
             var start = il.Create(OpCodes.Nop);
             var startFinally = il.Create(OpCodes.Nop);
             var end = il.Create(OpCodes.Nop);
 
             SplitInstructions();
-            il.AppendAll(_beforeInstructions);
+            il.AppendAll(beforeInstructions);
             AppendProlog();
             il.Append(start);
-            il.AppendAll(_affectedInstructions);
+            il.AppendAll(affectedInstructions);
             il.Append(OpCodes.Leave_S, end);
             il.Append(startFinally);
             AppendEpilog();
             il.Append(OpCodes.Endfinally);
             il.Append(end);
 
-            il.AppendAll(_afterInstructions);
+            il.AppendAll(afterInstructions);
 
             var handler = new ExceptionHandler(ExceptionHandlerType.Finally)
                 {
@@ -67,83 +69,85 @@ namespace SheepAspect.LifecycleAdvising
                     HandlerStart = startFinally,
                     HandlerEnd = end
                 };
-            Method.Body.ExceptionHandlers.Add(handler);
+            method.Body.ExceptionHandlers.Add(handler);
         }
 
         private TypeReference GetReturnType()
         {
-            if (_instruction == null)
-                return Method.ReturnsVoid()?null:Method.ReturnType;
+            if (instruction == null)
+            {
+                return method.ReturnsVoid()?null:method.ReturnType;
+            }
 
-            return _iDescriptor.GetReturnType();
+            return iDescriptor.ReturnType;
         }
 
         private void SplitInstructions()
         {
-            _affectedInstructions = il.Body.Instructions.ToList();
+            affectedInstructions = il.Body.Instructions.ToList();
             il.Body.Instructions.Clear();
 
-            if(_instruction == null)
+            if(instruction == null)
             {
-                var first = _affectedInstructions.First();
-                var last = _affectedInstructions.Last(x=> x.OpCode == OpCodes.Ret);
+                var first = affectedInstructions.First();
+                var last = affectedInstructions.Last(x=> x.OpCode == OpCodes.Ret);
                 
                 if (first.OpCode == OpCodes.Nop)
                 {
-                    _beforeInstructions.Add(first);
-                    _affectedInstructions.RemoveAt(0);
+                    beforeInstructions.Add(first);
+                    affectedInstructions.RemoveAt(0);
                 }
                 if(last.OpCode == OpCodes.Ret)
                 {
-                    _afterInstructions.Add(last);
-                    _affectedInstructions.Remove(last);
+                    afterInstructions.Add(last);
+                    affectedInstructions.Remove(last);
                 }
             }
             else
             {
-                var index = _affectedInstructions.IndexOf(_instruction);
-                _beforeInstructions = _affectedInstructions.Take(index).ToList();
-                _afterInstructions = _affectedInstructions.Skip(index + 1).ToList();
+                var index = affectedInstructions.IndexOf(instruction);
+                beforeInstructions = affectedInstructions.Take(index).ToList();
+                afterInstructions = affectedInstructions.Skip(index + 1).ToList();
 
-                _affectedInstructions.Clear();
-                foreach (var argLoc in _iDescriptor.GetArgTypes().Select(argType => Method.AddLocal(argType)).Reverse())
+                affectedInstructions.Clear();
+                foreach (var argLoc in iDescriptor.ArgTypes.Select(argType => method.AddLocal(argType)).Reverse())
                 {
-                    _beforeInstructions.Add(il.Create(OpCodes.Stloc, argLoc));
-                    _affectedInstructions.Insert(0, il.Create(OpCodes.Ldloc, argLoc));
+                    beforeInstructions.Add(il.Create(OpCodes.Stloc, argLoc));
+                    affectedInstructions.Insert(0, il.Create(OpCodes.Ldloc, argLoc));
                 }
-                var targetType = _iDescriptor.GetTargetType();
+                var targetType = iDescriptor.TargetType;
                 if(targetType != null)
                 {
-                    var targetLoc = Method.AddLocal(targetType);
-                    _beforeInstructions.Add(il.Create(OpCodes.Stloc, targetLoc));
-                    _affectedInstructions.Insert(0, il.Create(OpCodes.Ldloc, targetLoc));
+                    var targetLoc = method.AddLocal(targetType);
+                    beforeInstructions.Add(il.Create(OpCodes.Stloc, targetLoc));
+                    affectedInstructions.Insert(0, il.Create(OpCodes.Ldloc, targetLoc));
                 }
                 
-                _affectedInstructions.Add(_instruction);
+                affectedInstructions.Add(instruction);
             }
 
             var retType = GetReturnType();
             if (retType != null)
             {
-                var retVal = Method.AddLocal(retType);
-                _affectedInstructions.Add(il.Create(OpCodes.Stloc, retVal));
-                _afterInstructions.Insert(0, il.Create(OpCodes.Ldloc, retVal));
+                var retVal = method.AddLocal(retType);
+                affectedInstructions.Add(il.Create(OpCodes.Stloc, retVal));
+                afterInstructions.Insert(0, il.Create(OpCodes.Ldloc, retVal));
             }
             
         }
 
         public void AppendProlog()
         {
-            il.Append(OpCodes.Ldtoken, Method.Module.Import(_aspectType));
-            il.Append(OpCodes.Call, Method.Module.ImportMethod<Type>("GetTypeFromHandle"));
-            il.Append(OpCodes.Call, Method.Module.ImportMethod(typeof(PerCFlowAspectLifecycle), "Push"));
+            il.Append(OpCodes.Ldtoken, method.Module.Import(_aspectType));
+            il.Append(OpCodes.Call, method.Module.ImportMethod<Type>("GetTypeFromHandle"));
+            il.Append(OpCodes.Call, method.Module.ImportMethod(typeof(PerCFlowAspectLifecycle), "Push"));
         }
 
         public void AppendEpilog()
         {
-            il.Append(OpCodes.Ldtoken, Method.Module.Import(_aspectType));
-            il.Append(OpCodes.Call, Method.Module.ImportMethod<Type>("GetTypeFromHandle"));
-            il.Append(OpCodes.Call, Method.Module.ImportMethod(typeof(PerCFlowAspectLifecycle), "Pop"));
+            il.Append(OpCodes.Ldtoken, method.Module.Import(_aspectType));
+            il.Append(OpCodes.Call, method.Module.ImportMethod<Type>("GetTypeFromHandle"));
+            il.Append(OpCodes.Call, method.Module.ImportMethod(typeof(PerCFlowAspectLifecycle), "Pop"));
         }
     }
 }

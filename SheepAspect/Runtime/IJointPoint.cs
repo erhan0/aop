@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Linq;
-using Mono.Cecil;
 using SheepAspect.Core;
 
 namespace SheepAspect.Runtime
@@ -16,19 +15,19 @@ namespace SheepAspect.Runtime
         private readonly AdviceCallback _callback;
         protected object Target { get; set; }
         public object This { get; protected set; }
-        protected readonly object[] _args;
+        protected readonly object[] args;
 
         protected JointPointBase(AdviceCallback callback, object thisInstance, object target, object[] args)
         {
             This = thisInstance;
             Target = target;
-            _args = args;
+            this.args = args;
             _callback = callback;
         }
 
         public object Execute()
         {
-            return _callback(This, Target,_args);
+            return _callback(This, Target,args);
         }
 
         public abstract class StaticPart
@@ -78,8 +77,10 @@ namespace SheepAspect.Runtime
                 var aspect = lifecycle.GetAspect(jp);
 
                 if(aspect == null)
+                {
                     return Callback(thisInstance, target, args);
-                
+                }
+
                 return Advice(aspect, jp);
             }
 

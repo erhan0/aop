@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Media;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -23,7 +21,9 @@ namespace SheepAspectQueryAnalyzer.ViewModel
             if (children != null)
             {
                 foreach (var child in children)
+                {
                     _children.Add(child);
+                }
             }
         }
         protected CodeTree()
@@ -99,11 +99,20 @@ namespace SheepAspectQueryAnalyzer.ViewModel
             private static ImageSource GetImage(TypeDefinition type)
             {
                 if (type.IsInterface)
+                {
                     return CodeTreeIcons.Interface.ToImageSource();
+                }
+
                 if (type.BaseType.FullName == "System.MulticastDelegate")
+                {
                     return CodeTreeIcons.Delegate.ToImageSource();
+                }
+
                 if (type.IsValueType)
+                {
                     return CodeTreeIcons.Struct.ToImageSource();
+                }
+
                 return CodeTreeIcons.Class.ToImageSource();
             }
             
@@ -152,10 +161,14 @@ namespace SheepAspectQueryAnalyzer.ViewModel
                     {
                         var parameter = parameters[i];
                         if (i > 0)
+                        {
                             builder.Append(",");
+                        }
 
                         if (parameter.ParameterType.IsSentinel)
+                        {
                             builder.Append("...,");
+                        }
 
                         builder.Append(parameter.ParameterType.FullName);
                     }
@@ -175,7 +188,9 @@ namespace SheepAspectQueryAnalyzer.ViewModel
             public InstuructionNode(Instruction instruction)
             {
                 if(instruction == null)
+                {
                     throw new ArgumentNullException("instruction");
+                }
 
                 _instruction = instruction;
                 Icon = CodeTreeIcons.Instruction.ToImageSource();

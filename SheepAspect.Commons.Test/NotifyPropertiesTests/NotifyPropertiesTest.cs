@@ -1,13 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
-using Mono.Cecil;
 using NUnit.Framework;
 using SheepAspect.Commons.Observations;
-using SheepAspect.Compile;
-using SheepAspect.Core;
 using SheepAspect.Framework;
 using SheepAspect.UnitTest.TestHelper;
 using FluentAssertions.EventMonitoring;
@@ -17,23 +13,23 @@ namespace SheepAspect.Commons.Test.NotifyPropertiesTests
     [TestFixture]
     public class NotifyPropertiesTest
     {
-        private dynamic _target;
+        private dynamic target;
 
         [TestFixtureSetUp]
         public void Weave()
         {
             var provider = new AttributiveAspectProvider();
             var aspect = provider.GetDefinition(typeof (TestNotifyPropertiesAspect));
-            _target = WeaveTestHelper.WeaveAndLoadType(GetType(), aspect, typeof(NotifyPropertiesSut));
-            ((object)_target).MonitorEvents();
+            target = WeaveTestHelper.WeaveAndLoadType(GetType(), aspect, typeof(NotifyPropertiesSut));
+            ((object)target).MonitorEvents();
         }
 
         [Assert]
         public void Change1Property()
         {
-            var read = _target.One;
+            var read = target.One;
 
-            _target.One = "change";
+            target.One = "change";
             ShouldRaisePropertyChangeFor(x=> x.One);
         }
 
@@ -45,7 +41,7 @@ namespace SheepAspect.Commons.Test.NotifyPropertiesTests
                 Expression.Property(Expression.Convert(parameter, typeof(NotifyPropertiesSut)), (PropertyInfo)mExp.Member),
                 parameter);
             
-            ((object)_target).ShouldRaisePropertyChangeFor(exp);
+            ((object)target).ShouldRaisePropertyChangeFor(exp);
         }
 
         public class TestNotifyPropertiesAspect: NotifyPropertiesAspectBase

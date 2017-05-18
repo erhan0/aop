@@ -5,12 +5,7 @@
 // Unreachable code detected.
 #pragma warning disable 162
 
-
-using System.Collections.Generic;
 using Antlr.Runtime;
-using Stack = System.Collections.Generic.Stack<object>;
-using List = System.Collections.IList;
-using ArrayList = System.Collections.Generic.List<object>;
 
 namespace  SheepAspect.Saql.Ast 
 {
@@ -483,9 +478,11 @@ public partial class PointcutLexer : Antlr.Runtime.Lexer
 
 				default:
 					if (cnt3 >= 1)
-						goto loop3;
+                                    {
+                                        goto loop3;
+                                    }
 
-					EarlyExitException eee3 = new EarlyExitException( 3, input );
+                                    EarlyExitException eee3 = new EarlyExitException( 3, input );
 					DebugRecognitionException(eee3);
 					throw eee3;
 				}

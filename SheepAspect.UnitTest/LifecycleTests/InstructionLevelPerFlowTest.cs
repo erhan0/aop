@@ -3,7 +3,6 @@ using FluentAssertions;
 using NUnit.Framework;
 using SheepAspect.Core;
 using SheepAspect.Framework;
-using SheepAspect.Pointcuts;
 using SheepAspect.Pointcuts.Impl;
 using SheepAspect.UnitTest.LifecycleTests.Helper;
 using SheepAspect.UnitTest.TestHelper;

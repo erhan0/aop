@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using SheepAspect.Core;
 using SheepAspect.Helpers;
@@ -21,23 +20,34 @@ namespace SheepAspect.Saql.Ast
         {
             var method = pointcut.GetType().GetMethod("Where" + Property);
             if (method == null)
+            {
                 throw new UnkonwnCriteriaSaqlException(this, pointcut);
+            }
 
             var parameters = method.GetParameters();
 
             object[] args;
 
             if (parameters.Length > 0 && parameters[0].ParameterType == typeof(AspectDefinition))
-                 args = new[] { Aspect };
+            {
+                args = new[] { Aspect };
+            }
             else
             {
                 if (parameters.Length > 0 && Value == null)
+                {
                     throw new MissingArgumentSaqlException(this);
+                }
+
                 if (parameters.Length == 0 && Value != null)
+                {
                     throw new UnexpectedArgumentSaqlException(this);
+                }
 
                 if (parameters.Length == 0)
+                {
                     args = new object[0];
+                }
                 else
                 {
                     var param = parameters[0];

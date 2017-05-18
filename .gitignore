@@ -1,0 +1,19 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.un~
+/Driver/obj/Debug
+/Driver/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Driver/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/Driver/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Driver/obj/Debug/Driver.pdb
+/Driver/obj/Debug/Driver.exe
+/Driver/obj/Debug/Driver.csprojResolveAssemblyReference.cache
+/Driver/obj/Debug/Driver.csproj.FileListAbsolute.txt
+/Driver/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Driver/obj/Debug/CoreCompileInputs.cache
+*.cache
+/Driver/bin/Debug/SheepAspect.Tasks.dll
+/Driver/bin/Debug/SheepAspect.config
+/Driver/bin/Debug/Driver.exe.pdb

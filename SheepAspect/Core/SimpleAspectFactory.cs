@@ -9,10 +9,11 @@ namespace SheepAspect.Core
         public object CreateInstance(Type type, IJointPoint joinpoint)
         {
             var obj = Instantiate(type);
-            var aspectAware = obj as IAspectAware;
 
-            if(aspectAware != null)
+            if (obj is IAspectAware aspectAware)
+            {
                 aspectAware.OnCreated(joinpoint);
+            }
 
             return obj;
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using SheepAspect.MixinsAdvising;
+﻿using SheepAspect.MixinsAdvising;
 
 namespace SheepAspect.UnitTest.ImplementInterfaceTests
 {

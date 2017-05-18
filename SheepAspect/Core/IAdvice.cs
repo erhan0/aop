@@ -4,6 +4,9 @@ using Mono.Cecil.Cil;
 
 namespace SheepAspect.Core
 {
+    /// <summary>
+    /// the Advice interface that all advices implement
+    /// </summary>
     public interface IAdvice
     {
         IEnumerable<IPointcut> Pointcuts { get; }

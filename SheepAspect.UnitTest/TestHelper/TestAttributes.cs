@@ -21,13 +21,17 @@ namespace SheepAspect.UnitTest.TestHelper
         private static void RunArranges(Type fixtureType, object instance, string attribute, Func<MethodInfo, NUnitException, bool> handleException)
         {
             if (fixtureType.IsNested)
+            {
                 RunArranges(fixtureType.DeclaringType, null, attribute, handleException);
+            }
 
             foreach (var method in Reflect.GetMethodsWithAttribute(fixtureType, attribute, true))
             {
                 if (instance == null && !method.IsStatic)
+                {
                     throw new InvalidTestFixtureException(
                         string.Format("When you have nested-tests, [{0}] method must be made static: {1}", attribute, method));
+                }
 
                 try
                 {
@@ -36,7 +40,9 @@ namespace SheepAspect.UnitTest.TestHelper
                 catch (NUnitException e)
                 {
                     if(!handleException(method, e))
+                    {
                         throw;
+                    }
                 }
             }
         }
@@ -53,15 +59,19 @@ namespace SheepAspect.UnitTest.TestHelper
             {
                 caught = true;
                 if (instance == null && !field.IsStatic)
+                {
                     throw new InvalidTestFixtureException(
                         string.Format("When you have nested-tests, [CatchException] field must be made static: {0}", field));
+                }
 
                 field.SetValue(instance, e.InnerException);
             }
 
             if(fixtureType != method.ReflectedType)
+            {
                 caught |= HandleException(fixtureType.DeclaringType, null, method, e);
-            
+            }
+
             return caught;
         }
 

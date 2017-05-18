@@ -18,24 +18,24 @@ namespace SheepAspect.AroundAdvising
 {
     public abstract class AroundWeaverBase : MethodWeaverBase
     {
-        protected MethodReference AdviceMethod;
-        protected TypeReference AspectType;
-        private readonly string _adviceName;
-        protected MethodDefinition InvokerMethod;
-        private FieldDefinition _jpStatic;
-        protected string JpName;
-        protected MethodDefinition CallbackMethod;
-        private bool _createInvoker;
-        protected TypeDefinition JpStaticClass;
+        protected MethodReference adviceMethod;
+        protected TypeReference aspectType;
+        private readonly string adviceName;
+        protected MethodDefinition invokerMethod;
+        private FieldDefinition jpStatic;
+        protected string jpName;
+        protected MethodDefinition callbackMethod;
+        private bool createInvoker;
+        protected TypeDefinition jpStaticClass;
 
         protected AroundWeaverBase(MethodDefinition method, AroundAdvice advice, int priority): base(method)
         {
-            _adviceName = advice.GetFullName();
+            adviceName = advice.FullName;
             _priority = priority;
 
-            AdviceMethod = Module.Import(advice.AdviceMethod);
-            AspectType = Module.Import(advice.AdviceMethod.ReflectedType);
-            Method = method;
+            adviceMethod = Module.Import(advice.AdviceMethod);
+            aspectType = Module.Import(advice.AdviceMethod.ReflectedType);
+            base.method = method;
         }
 
         public override void Weave()
@@ -58,40 +58,42 @@ namespace SheepAspect.AroundAdvising
         {
             DefineJpStatic();
 
-            CallbackMethod = new MethodDefinition("Callback", MethodAttributes.Static | MethodAttributes.Private,
+            callbackMethod = new MethodDefinition("Callback", MethodAttributes.Static | MethodAttributes.Private,
                                                   Module.Import(typeof(object)));
-            JpStaticClass.Methods.Add(CallbackMethod);
+            jpStaticClass.Methods.Add(callbackMethod);
 
-            var invokerName = "<>sac_" + _adviceName + "$Invoke";
-            InvokerMethod = Method.DeclaringType.Methods.FirstOrDefault(m => m.Name.Equals(invokerName));
-            if (InvokerMethod == null)
+            var invokerName = "<>sac_" + adviceName + "$Invoke";
+            invokerMethod = method.DeclaringType.Methods.FirstOrDefault(m => m.Name.Equals(invokerName));
+            if (invokerMethod == null)
             {
-                InvokerMethod = new MethodDefinition(invokerName, MethodAttributes.Static | MethodAttributes.Private,
+                invokerMethod = new MethodDefinition(invokerName, MethodAttributes.Static | MethodAttributes.Private,
                                                       Module.Import(typeof(object)));
-                Method.DeclaringType.Methods.Add(InvokerMethod);
-                _createInvoker = true;
+                method.DeclaringType.Methods.Add(invokerMethod);
+                createInvoker = true;
             }
         }
 
         private void DefineJpStatic()
         {
-            var baseJpName = "<>sac_" + Method.Name;
-            JpName = baseJpName;
-            for (var i = 0; Method.DeclaringType.NestedTypes.Any(x=> x.Name.Equals(JpName+"<>JpStatic")); i++ )
-                JpName = baseJpName + i;
+            var baseJpName = "<>sac_" + method.Name;
+            jpName = baseJpName;
+            for (var i = 0; method.DeclaringType.NestedTypes.Any(x=> x.Name.Equals(jpName+"<>JpStatic")); i++ )
+            {
+                jpName = baseJpName + i;
+            }
 
-            _jpStatic = new FieldDefinition("Instance", FieldAttributes.Static | FieldAttributes.Public, Module.Import(typeof(JointPointBase.StaticPart)));
-            JpStaticClass = new TypeDefinition("",
-                                                JpName+"<>JpStatic",
+            jpStatic = new FieldDefinition("Instance", FieldAttributes.Static | FieldAttributes.Public, Module.Import(typeof(JointPointBase.StaticPart)));
+            jpStaticClass = new TypeDefinition("",
+                                                jpName+"<>JpStatic",
                                                 TypeAttributes.NestedPrivate | TypeAttributes.Sealed | TypeAttributes.Abstract | TypeAttributes.BeforeFieldInit
                                                 , Module.Import(typeof(object)))
                                  {
-                                     Fields = {_jpStatic}
+                                     Fields = {jpStatic}
                                  };
-            JpThisGenericParams = Method.DeclaringType.GenericParameters.Select(AddGenericParamToJp).ToArray();
-            JpMethodGenericParams = Method.GenericParameters.Select(AddGenericParamToJp).ToArray();
+            JpThisGenericParams = method.DeclaringType.GenericParameters.Select(AddGenericParamToJp).ToArray();
+            JpMethodGenericParams = method.GenericParameters.Select(AddGenericParamToJp).ToArray();
 
-            Method.DeclaringType.NestedTypes.Add(JpStaticClass);
+            method.DeclaringType.NestedTypes.Add(jpStaticClass);
         }
 
         protected readonly IDictionary<GenericParameter, GenericParameter> JpGenericParamMap = new Dictionary<GenericParameter, GenericParameter>();
@@ -101,8 +103,8 @@ namespace SheepAspect.AroundAdvising
 
         private GenericParameter AddGenericParamToJp(GenericParameter param)
         {
-            var clone = new GenericParameter(param.Name, JpStaticClass);
-            JpStaticClass.GenericParameters.Add(clone);
+            var clone = new GenericParameter(param.Name, jpStaticClass);
+            jpStaticClass.GenericParameters.Add(clone);
             JpGenericParamMap[param] = clone;
             return clone;
         }
@@ -119,18 +121,22 @@ namespace SheepAspect.AroundAdvising
 
         protected void ValidateAdvice()
         {
-            var jpType = AdviceMethod.Module.Import(GetJoinPointType()).Resolve();
-            if (AdviceMethod.Parameters.Count != 1)
-                throw new InvalidAdviceSignatureException(AdviceMethod, GetAdviceTypeName(), "Should have exactly one method argument of type assignable to {0}".FormatWith(jpType));
+            var jpType = adviceMethod.Module.Import(JoinPointType).Resolve();
+            if (adviceMethod.Parameters.Count != 1)
+            {
+                throw new InvalidAdviceSignatureException(adviceMethod, AdviceTypeName, "Should have exactly one method argument of type assignable to {0}".FormatWith(jpType));
+            }
 
-            if (!AdviceMethod.Parameters[0].ParameterType.Resolve().IsAssignableFrom(jpType))
-                throw new InvalidAdviceSignatureException(AdviceMethod, GetAdviceTypeName(),
+            if (!adviceMethod.Parameters[0].ParameterType.Resolve().IsAssignableFrom(jpType))
+            {
+                throw new InvalidAdviceSignatureException(adviceMethod, AdviceTypeName,
                                                           "Parameter type should be assignable to {0}".FormatWith(
                                                               jpType.Name));
+            }
         }
 
-        protected abstract string GetAdviceTypeName();
-        protected abstract Type GetJoinPointType();
+        protected abstract string AdviceTypeName { get; }
+        protected abstract Type JoinPointType { get; }
 
         /// <summary>
         /// Requires 2 items (object target, object this) in the evaulation stack
@@ -140,22 +146,28 @@ namespace SheepAspect.AroundAdvising
         /// <param name="jpStaticRef"></param>
         protected void AppendCallDispatch(ILProcessor il, VariableDefinition args, GenericInstanceType jpStaticRef)
         {
-            il.Append(OpCodes.Ldsfld, new FieldReference(_jpStatic.Name, _jpStatic.FieldType, jpStaticRef));
+            il.Append(OpCodes.Ldsfld, new FieldReference(jpStatic.Name, jpStatic.FieldType, jpStaticRef));
             il.Append(OpCodes.Ldloc, args);
             var dispatchMethod = new GenericInstanceMethod(Module.ImportMethod(typeof(AspectRuntime), "Dispatch"))
                                      {
-                                         GenericArguments = { AspectType }
+                                         GenericArguments = { aspectType }
                                      };
             il.Append(OpCodes.Call, dispatchMethod);
         }
 
         protected GenericInstanceType GetRefThisToJpStatic()
         {
-            var staticJpRef = new GenericInstanceType(JpStaticClass);
-            foreach (var p in Method.DeclaringType.GenericParameters)
+            var staticJpRef = new GenericInstanceType(jpStaticClass);
+            foreach (var p in method.DeclaringType.GenericParameters)
+            {
                 staticJpRef.GenericArguments.Add(p);
-            foreach (var p in Method.GenericParameters)
+            }
+
+            foreach (var p in method.GenericParameters)
+            {
                 staticJpRef.GenericArguments.Add(p);
+            }
+
             return staticJpRef;
         }
 
@@ -165,36 +177,41 @@ namespace SheepAspect.AroundAdvising
             var target = new ParameterDefinition("target", ParameterAttributes.None, Module.Import(typeof (object)));
             var args = new ParameterDefinition("args", ParameterAttributes.None, Module.Import(typeof(object[])));
 
-            CallbackMethod.Parameters.Add(thisInstance);
-            CallbackMethod.Parameters.Add(target);
-            CallbackMethod.Parameters.Add(args);
+            callbackMethod.Parameters.Add(thisInstance);
+            callbackMethod.Parameters.Add(target);
+            callbackMethod.Parameters.Add(args);
 
-            CallbackMethodBody(CallbackMethod.Body.GetILProcessor(), thisInstance, target, args);
+            CallbackMethodBody(callbackMethod.Body.GetILProcessor(), thisInstance, target, args);
         }
 
         protected abstract void CallbackMethodBody(ILProcessor il, ParameterDefinition thisInstance, ParameterDefinition target, ParameterDefinition args);
 
         protected void AdviceInvokerMethod()
         {
-            if (_createInvoker)
+            if (createInvoker)
             {
                 var aspectParam = new ParameterDefinition("aspect", ParameterAttributes.None,
                                                           Module.Import(typeof(object)));
                 var jpParam = new ParameterDefinition("joinPoint", ParameterAttributes.None,
-                                                      Method.Module.Import(
+                                                      method.Module.Import(
                                                           Module.Import(typeof(IJointPoint))));
 
-                InvokerMethod.Parameters.Add(aspectParam);
-                InvokerMethod.Parameters.Add(jpParam);
+                invokerMethod.Parameters.Add(aspectParam);
+                invokerMethod.Parameters.Add(jpParam);
 
-                var il = InvokerMethod.Body.GetILProcessor();
+                var il = invokerMethod.Body.GetILProcessor();
                 il.Append(OpCodes.Ldarg, aspectParam);
                 il.Append(OpCodes.Ldarg, jpParam);
-                il.Append(OpCodes.Call, AdviceMethod);
-                if (AdviceMethod.ReturnsVoid())
+                il.Append(OpCodes.Call, adviceMethod);
+                if (adviceMethod.ReturnsVoid())
+                {
                     il.Append(OpCodes.Ldnull);
-                else if (AdviceMethod.ReturnType.IsValueType)
-                    il.Append(OpCodes.Box, AdviceMethod.ReturnType);
+                }
+                else if (adviceMethod.ReturnType.IsValueType)
+                {
+                    il.Append(OpCodes.Box, adviceMethod.ReturnType);
+                }
+
                 il.Append(OpCodes.Ret);
 
             }
@@ -202,27 +219,27 @@ namespace SheepAspect.AroundAdvising
 
         protected void InitStaticJp()
         {
-            var cons = JpStaticClass.CreateStaticConstructor();
+            var cons = jpStaticClass.CreateStaticConstructor();
             var il = cons.Body.GetILProcessor();
 
-            var thisRef = Method.DeclaringType.MakeGenerics(JpThisGenericParams);
+            var thisRef = method.DeclaringType.MakeGenerics(JpThisGenericParams);
             
             il.Append(OpCodes.Ldnull);
-            il.Append(OpCodes.Ldftn, InvokerMethod.MakeHostInstanceGeneric(thisRef));
+            il.Append(OpCodes.Ldftn, invokerMethod.MakeHostInstanceGeneric(thisRef));
             il.Append(OpCodes.Newobj, Module.Import(typeof(AdviceInvoker).GetConstructors()[0]));
 
             il.Append(OpCodes.Ldnull);
-            il.Append(OpCodes.Ldftn, CallbackMethod.MakeHostGenericSelf());
+            il.Append(OpCodes.Ldftn, callbackMethod.MakeHostGenericSelf());
             il.Append(OpCodes.Newobj, Module.Import(typeof(AdviceCallback).GetConstructors()[0]));
 
-            il.Append(OpCodes.Ldtoken, Method.MakeGenerics(JpMethodGenericParams));
+            il.Append(OpCodes.Ldtoken, method.MakeGenerics(JpMethodGenericParams));
             il.Append(OpCodes.Ldtoken, thisRef);
             il.Append(OpCodes.Call,
-                     Method.Module.ImportMethod<MethodBase>("GetMethodFromHandle", typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle)));
+                     method.Module.ImportMethod<MethodBase>("GetMethodFromHandle", typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle)));
 
             AppendInitializeStaticJp(il);
 
-            il.Append(OpCodes.Stsfld, _jpStatic.MakeHostGenericSelf());
+            il.Append(OpCodes.Stsfld, jpStatic.MakeHostGenericSelf());
             il.Append(OpCodes.Ret);
         }
 

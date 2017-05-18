@@ -13,7 +13,9 @@ namespace SheepAspect.Helpers
                 lock (dict)
                 {
                     if (!dict.TryGetValue(key, out val))
+                    {
                         dict[key] = val = valFunc();
+                    }
                 }
             }
             return val;
@@ -32,8 +34,10 @@ namespace SheepAspect.Helpers
         public static void TransferItemsTo<T>(this ICollection<T> source, ICollection<T> target)
         {
             foreach (var s in source)
+            {
                 target.Add(s);
-            
+            }
+
             source.Clear();
         }
     }

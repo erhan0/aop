@@ -21,7 +21,9 @@ namespace SheepAspect.Saql
 
                 var node = walker.pointcut().value;
                 if(node != null)
+                {
                     node.Build(pointcut);
+                }
             }
             catch(SheepAspectException e)
             {

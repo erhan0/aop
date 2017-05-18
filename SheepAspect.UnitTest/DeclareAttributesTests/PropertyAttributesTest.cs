@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection;
 using NUnit.Framework;
 using SheepAspect.Core;
 using SheepAspect.DeclareAttributeAdvising;

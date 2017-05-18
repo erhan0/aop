@@ -6,19 +6,15 @@
 #pragma warning disable 162
 
 
-using System.Collections.Generic;
 using Antlr.Runtime;
-using Stack = System.Collections.Generic.Stack<object>;
-using List = System.Collections.IList;
-using ArrayList = System.Collections.Generic.List<object>;
 
 
 using Antlr.Runtime.Tree;
 using RewriteRuleITokenStream = Antlr.Runtime.Tree.RewriteRuleTokenStream;
 
-namespace  SheepAspect.Saql.Ast 
+namespace SheepAspect.Saql.Ast
 {
-[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.3 Nov 30, 2010 12:45:30")]
+    [System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.3 Nov 30, 2010 12:45:30")]
 [System.CLSCompliant(false)]
 public partial class PointcutParser : Antlr.Runtime.Parser
 {
@@ -448,9 +444,11 @@ public partial class PointcutParser : Antlr.Runtime.Parser
 
 					default:
 						if (cnt3 >= 1)
-							goto loop3;
+                                                        {
+                                                            goto loop3;
+                                                        }
 
-						EarlyExitException eee3 = new EarlyExitException( 3, input );
+                                                        EarlyExitException eee3 = new EarlyExitException( 3, input );
 						DebugRecognitionException(eee3);
 						throw eee3;
 					}

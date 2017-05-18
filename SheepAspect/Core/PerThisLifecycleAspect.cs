@@ -1,5 +1,4 @@
-﻿using SheepAspect.Exceptions;
-using SheepAspect.Framework;
+﻿using SheepAspect.Framework;
 using SheepAspect.Runtime;
 using SheepAspect.Runtime.Lifecycles;
 

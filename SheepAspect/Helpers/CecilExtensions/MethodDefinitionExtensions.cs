@@ -39,9 +39,15 @@ namespace SheepAspect.Helpers.CecilExtensions
         public static PropertyDefinition GetProperty(this MethodDefinition self)
         {
             if (self.IsGetter)
+            {
                 return self.DeclaringType.Properties.First(p => p.GetMethod == self);
+            }
+
             if (self.IsSetter)
+            {
                 return self.DeclaringType.Properties.First(p => p.SetMethod == self);
+            }
+
             return null;
         }
     }

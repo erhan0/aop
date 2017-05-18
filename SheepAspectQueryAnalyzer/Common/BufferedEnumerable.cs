@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace SheepAspectQueryAnalyzer.Common
+﻿namespace SheepAspectQueryAnalyzer.Common
 {
     //public class BufferedEnumerable<T>: IEnumerable<T>
     //{

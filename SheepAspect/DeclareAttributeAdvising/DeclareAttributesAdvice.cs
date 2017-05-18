@@ -13,27 +13,30 @@ namespace SheepAspect.DeclareAttributeAdvising
 {
     public class DeclareAttributesAdvice: AdviceBase
     {
-        private readonly MemberInfo _memberInfo;
-        private readonly Type _exceptAttributeType;
+        private readonly MemberInfo memberInfo;
+        private readonly Type exceptAttributeType;
 
         public DeclareAttributesAdvice(IEnumerable<IPointcut> pointcuts, MemberInfo member, Type exceptAttributeType) : base(pointcuts)
         {
-            _memberInfo = member;
-            _exceptAttributeType = exceptAttributeType;
+            memberInfo = member;
+            this.exceptAttributeType = exceptAttributeType;
         }
 
-        public override string GetFullName()
+        public override string FullName
         {
-            return "DeclareAttributes/{0}::{1}".FormatWith(_memberInfo.ReflectedType.FullName, _memberInfo.Name);
+            get
+            {
+                return "DeclareAttributes/{0}::{1}".FormatWith(memberInfo.ReflectedType.FullName, memberInfo.Name);
+            }
         }
 
         protected IEnumerable<CustomAttribute> GetAttributesToBeAdded(ModuleDefinition module)
         {
-            ICustomAttributeProvider provider = _memberInfo is PropertyInfo?
-                module.Import(_memberInfo.DeclaringType).Resolve().Properties.First(x => x.Name == _memberInfo.Name):
-                (module.Import((dynamic) _memberInfo).Resolve());
+            ICustomAttributeProvider provider = memberInfo is PropertyInfo?
+                module.Import(memberInfo.DeclaringType).Resolve().Properties.First(x => x.Name == memberInfo.Name):
+                (module.Import((dynamic) memberInfo).Resolve());
             
-            var exceptAttributeTypeRef = module.Import(_exceptAttributeType).Resolve();
+            var exceptAttributeTypeRef = module.Import(exceptAttributeType).Resolve();
             return provider.CustomAttributes.Where(x => x.AttributeType.Resolve() != exceptAttributeTypeRef)
                 .Select(a=> new CustomAttribute(module.Import(a.Constructor), a.GetBlob()));
         }
@@ -60,7 +63,7 @@ namespace SheepAspect.DeclareAttributeAdvising
 
         public override IEnumerable<IWeaver> GetWeavers(MethodDefinition method, Instruction instruction)
         {
-            throw new UnsupportedPointcutToAdviseException(method, instruction, GetFullName(), "DeclareAttributes");
+            throw new UnsupportedPointcutToAdviseException(method, instruction, FullName, "DeclareAttributes");
         }
     }
 
@@ -85,7 +88,9 @@ namespace SheepAspect.DeclareAttributeAdvising
         public void Weave()
         {
             foreach (var attribute in _attributes)
+            {
                 _target.CustomAttributes.Add(attribute);
+            }
         }
 
         public ModuleDefinition Module

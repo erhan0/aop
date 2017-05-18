@@ -16,7 +16,9 @@ namespace SheepAspectQueryAnalyzer.Common
         public CommandVm(string displayName, ICommand command)
         {
             if (command == null)
+            {
                 throw new ArgumentNullException("command");
+            }
 
             base.DisplayName = displayName;
             this.Command = command;

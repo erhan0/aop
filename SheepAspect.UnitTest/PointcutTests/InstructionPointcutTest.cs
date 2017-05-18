@@ -2,10 +2,8 @@ using System.Reflection;
 using Mono.Cecil;
 using NUnit.Framework;
 using SheepAspect.Core;
-using SheepAspect.Helpers;
 using SheepAspect.Pointcuts.Impl;
 using SheepAspect.Saql;
-using System.Linq;
 using FluentAssertions;
 using SheepAspect.UnitTest.TestHelper;
 

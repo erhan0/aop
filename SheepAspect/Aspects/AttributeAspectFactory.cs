@@ -12,13 +12,15 @@ namespace SheepAspect.Aspects
         public object CreateInstance(Type type, IJointPoint joinpoint)
         {
             MemberInfo member=null;
-            var callJp = joinpoint as ICallJointPoint;
-            if (callJp != null)
+            if (joinpoint is ICallJointPoint callJp)
+            {
                 member = callJp.TargetMember;
+            }
 
-            var memberJp = joinpoint as IMemberJointPoint;
-            if (memberJp != null)
+            if (joinpoint is IMemberJointPoint memberJp)
+            {
                 member = memberJp.Member;
+            }
 
             return member == null ? null : member.GetCustomAttributesData()
                 .Where(a=> type.IsAssignableFrom(a.Constructor.ReflectedType))

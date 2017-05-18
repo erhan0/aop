@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Microsoft.Build.Utilities;
 using SheepAspect.Compile;
 
@@ -32,7 +31,10 @@ namespace SheepAspect.Tasks
             catch (AggregateException e)
             {
                 foreach (var inner in e.InnerExceptions)
+                {
                     logger.LogError(inner.Message);
+                }
+
                 return false;
             }
             catch(Exception e)

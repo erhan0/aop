@@ -7,11 +7,11 @@ namespace SheepAspect.Pointcuts.Descriptions
     public interface IInstructionDescription
     {
         Instruction Instruction { get; }
-        string GetName();
-        Type GetJoinPointType();
+        string Name { get; }
+        Type JoinPointType { get; }
         void InitializeStaticJp(ILProcessor il);
-        TypeReference[] GetArgTypes();
-        TypeReference GetTargetType();
-        TypeReference GetReturnType();
+        TypeReference[] ArgTypes { get; }
+        TypeReference TargetType { get; }
+        TypeReference ReturnType { get; }
     }
 }

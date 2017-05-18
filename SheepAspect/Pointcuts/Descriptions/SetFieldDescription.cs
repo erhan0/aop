@@ -9,58 +9,60 @@ namespace SheepAspect.Pointcuts.Descriptions
 {
     public class SetFieldDescription: IInstructionDescription
     {
-        public static bool IsValid(Instruction i)
+        public static bool IsValid(Instruction instruction)
         {
-            var t = i.OpCode == OpCodes.Stfld || i.OpCode == OpCodes.Stsfld;
-            return t;
+            return instruction.OpCode == OpCodes.Stfld || instruction.OpCode == OpCodes.Stsfld;
         }
 
-        private readonly FieldReference _field;
-        private readonly Instruction _instruction;
+        private readonly FieldReference field;
+        private readonly Instruction instruction;
 
         public SetFieldDescription(Instruction instruction)
         {
-            _instruction = instruction;
-            _field = (FieldReference) instruction.Operand;
+            this.instruction = instruction;
+            field = (FieldReference) instruction.Operand;
         }
 
         public Instruction Instruction
         {
-            get { return _instruction; }
+            get { return instruction; }
         }
 
-        public string GetName()
-        {
-            return "Field-Set";
-        }
+        public string Name { get { return "Field-Set"; } }
 
-        public Type GetJoinPointType()
-        {
-            return typeof(SetFieldJointPoint);
-        }
+        public Type JoinPointType { get { return typeof(SetFieldJointPoint); } }
 
         public void InitializeStaticJp(ILProcessor il)
         {
-            il.Append(OpCodes.Ldtoken, _field);
+            il.Append(OpCodes.Ldtoken, field);
             il.Append(OpCodes.Call,
                       il.Body.Method.Module.ImportMethod<FieldInfo>("GetFieldFromHandle", typeof(RuntimeFieldHandle)));
 
             il.Append(OpCodes.Call, il.Body.Method.Module.ImportMethod<JointPointBase.StaticPart>("ForCallFieldSet"));
         }
 
-        public TypeReference[] GetArgTypes()
+        public TypeReference[] ArgTypes
         {
-            return new[] { _field.FieldType };
+            get
+            {
+                return new[] { field.FieldType };
+            }
         }
 
-        public TypeReference GetTargetType()
+        public TypeReference TargetType
         {
-            return _field.Resolve().IsStatic ? null : _field.DeclaringType;
+            get
+            {
+                return field.Resolve().IsStatic ? null : field.DeclaringType;
+            }
         }
 
-        public TypeReference GetReturnType()
+        public TypeReference ReturnType
         {
-            return null;
+            get
+            {
+                return null;
+            }
         }
     }
 }

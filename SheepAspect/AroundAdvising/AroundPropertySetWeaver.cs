@@ -14,16 +14,11 @@ namespace SheepAspect.AroundAdvising
 
         protected override void AppendCreateJpStaticPart(ILProcessor il)
         {
-            il.Append(OpCodes.Call, Method.Module.ImportMethod<JointPointBase.StaticPart>("ForPropertySet"));
+            il.Append(OpCodes.Call, method.Module.ImportMethod<JointPointBase.StaticPart>("ForPropertySet"));
         }
 
-        protected override System.Type GetJoinPointType()
-        {
-            return typeof(PropertySetJointPoint);
-        }
-        protected override string GetAdviceTypeName()
-        {
-            return "Around Property-Setter";
-        }
+        protected override System.Type JoinPointType { get { return typeof(PropertySetJointPoint); } }
+
+        protected override string AdviceTypeName { get { return "Around Property-Setter"; } }
     }
 }

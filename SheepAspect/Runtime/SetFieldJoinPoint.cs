@@ -8,11 +8,11 @@ namespace SheepAspect.Runtime
         
         public object Value
         {
-            get { return _args[0]; }
-            set { _args[0] = value; }
+            get { return args[0]; }
+            set { args[0] = value; }
         }
 
-        public new void Proceed()
+        public void Proceed()
         {
             base.Execute();
         }
@@ -25,18 +25,18 @@ namespace SheepAspect.Runtime
 
         public new class StaticPart: JointPointBase.StaticPart
         {
-            private readonly FieldInfo _field;
-            private readonly MethodInfo _callingMethod;
+            private readonly FieldInfo field;
+            private readonly MethodInfo callingMethod;
 
             public StaticPart(FieldInfo field, AdviceInvoker advice, AdviceCallback callback, MethodInfo callingMethod) : base(advice, callback)
             {
-                _callingMethod = callingMethod;
-                _field = field;
+                this.callingMethod = callingMethod;
+                this.field = field;
             }
 
             public override IJointPoint CreateJoinPoint(object instance, object target, object[] args)
             {
-                return new SetFieldJointPoint(_field, Callback, _callingMethod, instance, target, args);
+                return new SetFieldJointPoint(field, Callback, callingMethod, instance, target, args);
             }
         }
     }

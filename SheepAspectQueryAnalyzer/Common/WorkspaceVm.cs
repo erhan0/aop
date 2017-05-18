@@ -54,7 +54,9 @@ namespace SheepAspectQueryAnalyzer.Common
         {
             EventHandler handler = RequestClose;
             if (handler != null)
+            {
                 handler(this, EventArgs.Empty);
+            }
         }
 
         #endregion // RequestClose [event]

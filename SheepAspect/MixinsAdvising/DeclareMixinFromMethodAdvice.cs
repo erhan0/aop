@@ -20,9 +20,12 @@ namespace SheepAspect.MixinsAdvising
 
         public MethodInfo ImplementationFactory { get; set; }
 
-        public override string GetFullName()
+        public override string FullName
         {
-            return string.Format("MixAsInterface/{0}::{1}", ImplementationFactory.ReflectedType.FullName, ImplementationFactory.Name);
+            get
+            {
+                return string.Format("MixAsInterface/{0}::{1}", ImplementationFactory.ReflectedType.FullName, ImplementationFactory.Name);
+            }
         }
 
         public override IEnumerable<IWeaver> GetWeavers(TypeDefinition type)
@@ -46,7 +49,10 @@ namespace SheepAspect.MixinsAdvising
                 var il = factoryMethod.Body.GetILProcessor();
                 il.Append(OpCodes.Ldarg, factoryMethod.Parameters[0]);
                 if (_implementationFactory.HasParameters)
+                {
                     il.Append(OpCodes.Ldarg_0);
+                }
+
                 il.Append(OpCodes.Callvirt, _implementationFactory);
                 il.Append(OpCodes.Ret);
             }
@@ -54,22 +60,32 @@ namespace SheepAspect.MixinsAdvising
             protected override void Validate()
             {
                 if (_implementationFactory.GenericParameters.Any())
+                {
                     throw new InvalidAdviceSignatureException(_implementationFactory, "DeclareMixins", "Method must not have any generic parameter");
+                }
 
                 if (_implementationFactory.Parameters.Count > 1)
+                {
                     throw new InvalidAdviceSignatureException(_implementationFactory, "DeclareMixins", "Method must take either no parameter, or 1 parameter (instance)");
+                }
 
                 //if (_implementationFactory.Parameters.Any() && !_implementationFactory.Parameters.First().ParameterType.Resolve().IsAssignableFrom(WeavedType))
                 //    throw new InvalidAdviceSignatureException(_implementationFactory, "DeclareMixins", string.Format("Cannot assign {0} to {1}", _implementationFactory.Parameters.First().ParameterType, WeavedType));
 
                 if (_implementationFactory.Resolve().IsStatic)
+                {
                     throw new InvalidAdviceSignatureException(_implementationFactory, "DeclareMixins", "Method must not be static");
+                }
 
                 if (!_implementationFactory.Resolve().IsPublic)
+                {
                     throw new InvalidAdviceSignatureException(_implementationFactory, "DeclareMixins", "Method must be public");
+                }
 
                 if (_implementationFactory.ReturnsVoid())
+                {
                     throw new InvalidAdviceSignatureException(_implementationFactory, "DeclareMixins", string.Format("Method returns void. Method must return an implementation of mixins additionalInterfaces."));
+                }
 
                 base.Validate();
             }

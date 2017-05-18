@@ -16,15 +16,13 @@ namespace SheepAspect.Helpers
 
             foreach (var namedArgument in data.NamedArguments)
             {
-                var propertyInfo = namedArgument.MemberInfo as PropertyInfo;
-                if (propertyInfo != null)
+                if (namedArgument.MemberInfo is PropertyInfo propertyInfo)
                 {
                     propertyInfo.SetValue(attribute, namedArgument.TypedValue.Value, null);
                 }
                 else
                 {
-                    var fieldInfo = namedArgument.MemberInfo as FieldInfo;
-                    if (fieldInfo != null)
+                    if (namedArgument.MemberInfo is FieldInfo fieldInfo)
                     {
                         fieldInfo.SetValue(attribute, namedArgument.TypedValue.Value);
                     }

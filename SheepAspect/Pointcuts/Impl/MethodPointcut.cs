@@ -47,7 +47,7 @@ namespace SheepAspect.Pointcuts.Impl
             Where(m=> m.CustomAttributes.Any(a=> type.MatchFull(a.AttributeType.Resolve())));
         }
 
-        public void WhereName(StringCriteria name)
+        public new void WhereName(StringCriteria name)
         {
             Where(m=> name.Match(m.Name));
         }
@@ -72,7 +72,9 @@ namespace SheepAspect.Pointcuts.Impl
             Where(m=>
                       {
                           if (crits.Length > m.Parameters.Count)
+                          {
                               return false;
+                          }
 
                           return !crits.Where((t, i) => !t.MatchFull(m.Parameters[i].ParameterType.Resolve())).Any();
                       });

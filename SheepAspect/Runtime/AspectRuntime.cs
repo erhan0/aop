@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using SheepAspect.Core;
 using SheepAspect.Framework;
-using SheepAspect.Helpers;
 
 namespace SheepAspect.Runtime
 {

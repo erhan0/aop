@@ -1,6 +1,4 @@
-﻿using Mono.Cecil;
-
-namespace SheepAspect.Pointcuts
+﻿namespace SheepAspect.Pointcuts
 {
     public interface IConstructorPointcut: IMethodPointcut
     {

@@ -1,9 +1,7 @@
 using System;
 using NUnit.Framework;
-using System.Linq;
 using SheepAspect.AroundAdvising;
 using SheepAspect.Core;
-using SheepAspect.Pointcuts;
 using SheepAspect.Pointcuts.Impl;
 using SheepAspect.UnitTest.TestHelper;
 

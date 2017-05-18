@@ -27,7 +27,10 @@ namespace SheepAspectQueryAnalyzer.Engine
                                                                    {
                                                                        index++;
                                                                        if (p.Alias == null)
+                                                                       {
                                                                            return "Pointcut" + index;
+                                                                       }
+
                                                                        return p.Alias;
                                                                    };
 
@@ -50,7 +53,10 @@ namespace SheepAspectQueryAnalyzer.Engine
         {
             var type = typeof(SelectMethodsAttribute).Assembly.GetType(typeof (SelectMethodsAttribute).Namespace + "." + pointcut.AttributeName + "Attribute");
             if (type == null)
+            {
                 throw new QueryParsingException(pointcutName, pointcut, "Unrecognized pointcut attribute: " + pointcut.AttributeName);
+            }
+
             return (IPointcutProvider) Activator.CreateInstance(type, new object[] {pointcut.Saql});
         }
     }

@@ -4,8 +4,6 @@ using System.Linq;
 using SheepAspect.Core;
 using SheepAspect.Exceptions;
 using SheepAspect.LifecycleAdvising;
-using SheepAspect.Pointcuts.Impl;
-using SheepAspect.Runtime;
 using SheepAspect.Runtime.Lifecycles;
 
 namespace SheepAspect.Framework
@@ -36,11 +34,15 @@ namespace SheepAspect.Framework
         private IEnumerable<IPointcut> GetPointcuts(AspectDefinition aspect)
         {
             if (string.IsNullOrEmpty(ActivateOnPointcut))
+            {
                 return Enumerable.Empty<IPointcut>();
+            }
 
             var pointcuts = aspect.GetPointcuts(ActivateOnPointcut).ToArray();
             if(!pointcuts.Any())
+            {
                 throw new PointcutNotFoundException(ActivateOnPointcut, aspect.Name);
+            }
 
             return pointcuts;
         }

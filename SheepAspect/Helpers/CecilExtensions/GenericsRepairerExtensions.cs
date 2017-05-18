@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Mono.Cecil;
-using Mono.Cecil.Rocks;
 using System.Linq;
 
 namespace SheepAspect.Helpers.CecilExtensions
@@ -15,15 +14,15 @@ namespace SheepAspect.Helpers.CecilExtensions
 
         public static void TransferGenerics(this MemberReference self, IDictionary<GenericParameter, GenericParameter> map)
         {
-            var genMethod = self as GenericInstanceMethod;
-            if(genMethod != null)
+            if (self is GenericInstanceMethod genMethod)
             {
-                for(var i=0; i< genMethod.GenericArguments.Count; i++)
+                for (var i = 0; i < genMethod.GenericArguments.Count; i++)
+                {
                     genMethod.GenericArguments[i] = TransferGenerics(genMethod.GenericArguments[i], map);
+                }
             }
 
-            var typeRef = self as TypeReference;
-            if(typeRef != null)
+            if (self is TypeReference typeRef)
             {
                 self = TransferGenerics(typeRef, map);
             }
@@ -33,20 +32,24 @@ namespace SheepAspect.Helpers.CecilExtensions
 
         public static TypeReference TransferGenerics(this TypeReference self, IDictionary<GenericParameter, GenericParameter> map)
         {
-            var array = self as ArrayType;
-            if (array != null)
+            if (self is ArrayType array)
+            {
                 return new ArrayType(TransferGenerics(array.ElementType, map), array.Rank);
+            }
 
             var genParam = self as GenericParameter;
             GenericParameter mapped;
             if (genParam != null && map.TryGetValue(genParam, out mapped))
+            {
                 return mapped;
+            }
 
-            var genType = self as GenericInstanceType;
-            if(genType != null)
+            if (self is GenericInstanceType genType)
             {
                 for (var i = 0; i < genType.GenericArguments.Count; i++)
+                {
                     genType.GenericArguments[i] = TransferGenerics(genType.GenericArguments[i], map);
+                }
             }
             return self;
         }
@@ -79,28 +82,42 @@ namespace SheepAspect.Helpers.CecilExtensions
         {
             var genType = new GenericInstanceType(typeRef);
             foreach (var p in typeRef.GenericParameters)
+            {
                 genType.GenericArguments.Add(p);
+            }
+
             return genType;
         }
 
         public static MethodReference MakeGenerics(this MethodReference self, params TypeReference[] genericArgs)
         {
             if (!self.HasGenericParameters)
+            {
                 return self;
+            }
 
             var genericMethod = new GenericInstanceMethod(self);
             foreach (var p in genericArgs)
+            {
                 genericMethod.GenericArguments.Add(p);
+            }
+
             return genericMethod;
         }
 
         public static TypeReference MakeGenerics(this TypeReference self, params TypeReference[] genericArgs)
         {
             if (!self.HasGenericParameters)
+            {
                 return self;
+            }
+
             var genericType = new GenericInstanceType(self);
             foreach (var p in genericArgs)
+            {
                 genericType.GenericArguments.Add(p);
+            }
+
             return genericType;
         }
 
@@ -108,7 +125,9 @@ namespace SheepAspect.Helpers.CecilExtensions
         {
             var gType = type as GenericInstanceType;
             if (gType == null)
+            {
                 return self;
+            }
 
             var m = new MethodReference(self.Name, self.ReturnType, type)
                         {
@@ -117,9 +136,14 @@ namespace SheepAspect.Helpers.CecilExtensions
                             CallingConvention = self.CallingConvention
                         };
             foreach (var p in self.Parameters)
+            {
                 m.Parameters.Add(new ParameterDefinition(p.ParameterType));
+            }
+
             foreach (var p in self.GenericParameters)
+            {
                 m.GenericParameters.Add(p);
+            }
 
             return m;
         }
@@ -135,9 +159,14 @@ namespace SheepAspect.Helpers.CecilExtensions
                 CallingConvention = self.CallingConvention
             };
             foreach (var p in self.Parameters)
+            {
                 m.Parameters.Add(new ParameterDefinition(p.ParameterType));
+            }
+
             foreach (var p in self.GenericParameters)
+            {
                 m.GenericParameters.Add(p);
+            }
 
             return m;
         }

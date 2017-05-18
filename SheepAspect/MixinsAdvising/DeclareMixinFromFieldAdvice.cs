@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -47,10 +46,14 @@ namespace SheepAspect.MixinsAdvising
             protected override void Validate()
             {
                 if (_implementationField.Resolve().IsStatic)
+                {
                     throw new InvalidAdviceSignatureException(_implementationField, "DeclareMixins", "Field must not be static");
+                }
 
                 if (!_implementationField.Resolve().IsPublic)
+                {
                     throw new InvalidAdviceSignatureException(_implementationField, "DeclareMixins", "Field must be public");
+                }
 
                 base.Validate();
             }

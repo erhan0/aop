@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Mime;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -60,12 +58,18 @@ namespace SheepAspectQueryAnalyzer.ViewModel
             _toolbarCommands.Clear();
 
             foreach(var c in Commands.OfType<IconCommandVm>())
+            {
                 _toolbarCommands.Add(c);
+            }
 
             var activeWorkspace = _workspaceHolder.CurrentWorkspace;
             if(activeWorkspace != null)
-                foreach(var c in activeWorkspace.Commands.OfType<IconCommandVm>())
+            {
+                foreach (var c in activeWorkspace.Commands.OfType<IconCommandVm>())
+                {
                     _toolbarCommands.Add(c);
+                }
+            }
         }
 
         /// <summary>

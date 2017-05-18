@@ -5,7 +5,7 @@ namespace SheepAspect.Runtime
     public class MethodJointPoint : MemberJointPointBase
     {
         public MethodInfo Method { get; private set; }
-        public object[] Args { get { return _args; } }
+        public object[] Args { get { return args; } }
 
         public MethodJointPoint(MethodInfo method, object instance, object[] args, AdviceCallback callback) : base(method, callback, instance, args)
         {

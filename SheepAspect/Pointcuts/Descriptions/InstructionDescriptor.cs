@@ -28,7 +28,10 @@ namespace SheepAspect.Pointcuts.Descriptions
         {
             var val = _factories.FirstOrDefault(kv => kv.Item1(i));
             if (val == null)
+            {
                 throw new UnrecognizedInstructionException(i);
+            }
+
             return val.Item2(i);
         }
 

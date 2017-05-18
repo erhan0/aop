@@ -52,7 +52,9 @@ namespace SheepAspect.UnitTest.SaqlTests
                 }
 
                 if (node.Parent == null)
+                {
                     break;
+                }
             }
 
             for (node2 = node; node2 != null; node2 = node2.getNextSibling())
@@ -89,7 +91,9 @@ namespace SheepAspect.UnitTest.SaqlTests
                 }
 
                 if (node.Parent == null)
+                {
                     break;
+                }
             }
 
             if (flatten)

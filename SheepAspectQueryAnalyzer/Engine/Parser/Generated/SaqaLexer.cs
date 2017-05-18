@@ -6,15 +6,11 @@
 #pragma warning disable 162
 
 
-using System.Collections.Generic;
 using Antlr.Runtime;
-using Stack = System.Collections.Generic.Stack<object>;
-using List = System.Collections.IList;
-using ArrayList = System.Collections.Generic.List<object>;
 
-namespace  SheepAspectQueryAnalyzer.Engine.Parser 
+namespace SheepAspectQueryAnalyzer.Engine.Parser
 {
-[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.3 Nov 30, 2010 12:45:30")]
+    [System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.3 Nov 30, 2010 12:45:30")]
 [System.CLSCompliant(false)]
 public partial class SaqaLexer : Antlr.Runtime.Lexer
 {

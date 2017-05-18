@@ -5,17 +5,17 @@ namespace SheepAspect.Pointcuts.Impl
 {
     public class GetFieldPointcut : InstructionPointcut<GetFieldPointcut>
     {
-        private readonly FieldPointcut _fieldPointcut = new FieldPointcut();
+        private readonly FieldPointcut fieldPointcut = new FieldPointcut();
 
         public GetFieldPointcut()
         {
             Where((m, i)=> GetFieldDescription.IsValid(i) && 
-                _fieldPointcut.MatchFull(((FieldReference) i.Operand).Resolve()));
+                fieldPointcut.MatchFull(((FieldReference) i.Operand).Resolve()));
         }
 
         public void WhereField(FieldPointcut fieldPointcut)
         {
-            _fieldPointcut.WhereAny(fieldPointcut);
+            this.fieldPointcut.WhereAny(fieldPointcut);
         }
     }
 }

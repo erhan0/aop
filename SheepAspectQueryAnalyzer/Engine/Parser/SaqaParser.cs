@@ -8,7 +8,10 @@ namespace SheepAspectQueryAnalyzer.Engine.Parser
         public string ProcessString(IToken token)
         {
             if (token.Text.Length < 2 || !token.Text.StartsWith("\"") || !token.Text.EndsWith("\""))
+            {
                 throw new RecognitionException(string.Format("'{0}' is not a valid string", token.Text));
+            }
+
             return token.Text.Substring(1, token.Text.Length - 2);
         }
 

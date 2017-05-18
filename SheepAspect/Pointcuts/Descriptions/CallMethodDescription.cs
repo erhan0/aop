@@ -10,57 +10,66 @@ namespace SheepAspect.Pointcuts.Descriptions
 {
     public class CallMethodDescription: IInstructionDescription
     {
-        public static bool IsValid(Instruction i)
+        public static bool IsValid(Instruction instruction)
         {
-            return i.OpCode == OpCodes.Call || i.OpCode == OpCodes.Callvirt || i.OpCode == OpCodes.Calli;
+            return instruction.OpCode == OpCodes.Call || instruction.OpCode == OpCodes.Callvirt || instruction.OpCode == OpCodes.Calli;
         }
 
-        private readonly Instruction _instruction;
-        private readonly MethodReference _targetMethod;
+        private readonly Instruction instruction;
+        private readonly MethodReference targetMethod;
         public CallMethodDescription(Instruction instruction)
         {
-            _instruction = instruction;
-            _targetMethod = (MethodReference)instruction.Operand;
+            this.instruction = instruction;
+            targetMethod = (MethodReference)instruction.Operand;
         }
 
-        public string GetName()
-        {
-            return "Call Method";
-        }
+        public string Name { get { return "Call Method"; } }
 
         public Instruction Instruction
         {
-            get { return _instruction; }
+            get { return instruction; }
         }
 
-        public Type GetJoinPointType()
+        public Type JoinPointType
         {
-            return typeof (CallMethodJointPoint);
+            get
+            {
+                return typeof(CallMethodJointPoint);
+            }
         }
 
         public void InitializeStaticJp(ILProcessor il)
         {
-            il.Append(OpCodes.Ldtoken, _targetMethod);
-            il.Append(OpCodes.Ldtoken, _targetMethod.DeclaringType);
+            il.Append(OpCodes.Ldtoken, targetMethod);
+            il.Append(OpCodes.Ldtoken, targetMethod.DeclaringType);
             il.Append(OpCodes.Call,
                       il.Body.Method.Module.ImportMethod<MethodBase>("GetMethodFromHandle", typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle)));
 
             il.Append(OpCodes.Call, il.Body.Method.Module.ImportMethod<JointPointBase.StaticPart>("ForCallMethod"));
         }
 
-        public TypeReference[] GetArgTypes()
+        public TypeReference[] ArgTypes
         {
-            return _targetMethod.Parameters.Select(p=> p.ParameterType).ToArray();
+            get
+            {
+                return targetMethod.Parameters.Select(p => p.ParameterType).ToArray();
+            }
         }
 
-        public TypeReference GetTargetType()
+        public TypeReference TargetType
         {
-            return _targetMethod.Resolve().IsStatic?null: _targetMethod.DeclaringType;
+            get
+            {
+                return targetMethod.Resolve().IsStatic ? null : targetMethod.DeclaringType;
+            }
         }
 
-        public TypeReference GetReturnType()
+        public TypeReference ReturnType
         {
-            return _targetMethod.ReturnsVoid()?null: _targetMethod.ReturnType;
+            get
+            {
+                return targetMethod.ReturnsVoid() ? null : targetMethod.ReturnType;
+            }
         }
     }
 }

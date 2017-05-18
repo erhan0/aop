@@ -37,7 +37,9 @@ namespace SheepAspect.MixinsAdvising
                         AspectRuntime.GetAspect<TAspect>(new MethodJointPoint(ctor, instance, args,
                             delegate{throw new NotImplementedException();}));
                     if(aspect == null)
+                    {
                         throw new NotImplementedException("SheepAspect Mixin has no implementation");
+                    }
 
                     return aspect;
                 }, LazyThreadSafetyMode.PublicationOnly);
@@ -55,7 +57,10 @@ namespace SheepAspect.MixinsAdvising
         {
             var impl = _selector(Aspect);
             if(impl == null)
+            {
                 throw new NotImplementedException("SheepAspect Mixin has no implementation");
+            }
+
             return impl;
         }
     }

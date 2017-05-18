@@ -6,20 +6,16 @@
 #pragma warning disable 162
 
 
-    using System;
 
 
 using System.Collections.Generic;
 using Antlr.Runtime;
 using Antlr.Runtime.Tree;
-using RewriteRuleITokenStream = Antlr.Runtime.Tree.RewriteRuleTokenStream;using Stack = System.Collections.Generic.Stack<object>;
-using List = System.Collections.IList;
-using ArrayList = System.Collections.Generic.List<object>;
 
 
 namespace SheepAspect.Saql.Ast
 {
-[System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.3 Nov 30, 2010 12:45:30")]
+    [System.CodeDom.Compiler.GeneratedCode("ANTLR", "3.3 Nov 30, 2010 12:45:30")]
 [System.CLSCompliant(false)]
 public partial class PointcutWalker : Antlr.Runtime.Tree.TreeParser
 {

@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using SheepAspectQueryAnalyzer.ViewModel;
 
 namespace SheepAspectQueryAnalyzer.View
@@ -28,9 +17,10 @@ namespace SheepAspectQueryAnalyzer.View
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var vm = e.NewValue as QueryWorkspaceVm;
-            if (vm != null)
+            if (e.NewValue is QueryWorkspaceVm vm)
+            {
                 vm.RequestSelectedQueryText += () => txtQuery.SelectedText;
+            }
         }
     }
 }

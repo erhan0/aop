@@ -31,10 +31,15 @@ namespace SheepAspect.Compile
         private static IEnumerable<Type> AllPublicTypesInHierarchy(Type type)
         {
             if(!type.IsPublic)
+            {
                 yield break;
+            }
+
             yield return type;
             foreach(var t in type.GetNestedTypes().SelectMany(AllPublicTypesInHierarchy))
+            {
                 yield return t;
+            }
         }
     }
 }

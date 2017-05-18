@@ -8,7 +8,7 @@ namespace SheepAspect.Runtime
         
         public object[] Args
         {
-            get { return _args; }
+            get { return args; }
         }
 
         public CallMethodJointPoint(MethodInfo method, AdviceCallback callback, MethodInfo callingMethod, object thisInstance, object target, object[] args)

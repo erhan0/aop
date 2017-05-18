@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using SheepAspect.Core;
 using SheepAspect.MixinsAdvising;
-using SheepAspect.Pointcuts.Impl;
 
 namespace SheepAspect.Framework
 {
@@ -54,13 +53,15 @@ namespace SheepAspect.Framework
 
         protected override IAdvice CreateAdvice(MemberInfo member, IEnumerable<IPointcut> pointcuts)
         {
-            var method = member as MethodInfo;
-            if(method != null)
+            if (member is MethodInfo method)
+            {
                 return new DeclareMixinFromMethodAdvice(pointcuts, method, AdditionalInterfaces, AsFactory);
+            }
 
-            var field = member as FieldInfo;
-            if (field != null)
+            if (member is FieldInfo field)
+            {
                 return new DeclareMixinFromFieldAdvice(pointcuts, field, AdditionalInterfaces, AsFactory);
+            }
 
             throw new ArgumentException(string.Format("{0} is not supported", member.GetType()), "member");
             

@@ -8,7 +8,7 @@ using SheepAspect.Helpers;
 
 namespace SheepAspect.LifecycleAdvising
 {
-    public class PerFlowAdvice: AdviceBase
+    public class PerFlowAdvice : AdviceBase
     {
         private readonly Type _aspectType;
 
@@ -17,9 +17,12 @@ namespace SheepAspect.LifecycleAdvising
             _aspectType = aspectType;
         }
 
-        public override string GetFullName()
+        public override string FullName
         {
-            return string.Format("PerFlow/{0}", _aspectType);
+            get
+            {
+                return string.Format("PerFlow/{0}", _aspectType);
+            }
         }
 
         public override IEnumerable<IWeaver> GetWeavers(TypeDefinition type)
@@ -35,9 +38,14 @@ namespace SheepAspect.LifecycleAdvising
         public override IEnumerable<IWeaver> GetWeavers(PropertyDefinition property)
         {
             if(property.GetMethod != null)
+            {
                 yield return new PerFlowLifecycleWeaver(property.GetMethod, null, _aspectType);
+            }
+
             if (property.SetMethod != null)
+            {
                 yield return new PerFlowLifecycleWeaver(property.SetMethod, null, _aspectType);
+            }
         }
 
         public override IEnumerable<IWeaver> GetWeavers(MethodDefinition method, Instruction instruction)

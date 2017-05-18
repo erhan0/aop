@@ -1,13 +1,9 @@
 using System;
-using System.IO;
 using System.Reflection;
-using Mono.Cecil;
 using NUnit.Framework;
 using System.Linq;
-using SheepAspect.Compile;
 using SheepAspect.Core;
 using SheepAspect.Framework;
-using SheepAspect.Pointcuts;
 using SheepAspect.Runtime;
 using SheepAspect.Saql;
 

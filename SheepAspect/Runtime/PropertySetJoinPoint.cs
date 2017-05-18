@@ -6,8 +6,8 @@ namespace SheepAspect.Runtime
     {
         public object Value
         {
-            get { return _args[0]; }
-            set { _args[0] = value; }
+            get { return args[0]; }
+            set { args[0] = value; }
         }
 
         public void Proceed()

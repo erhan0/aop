@@ -1,8 +1,4 @@
-﻿
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Threading;
@@ -42,7 +38,9 @@ namespace SheepAspect.Commons.Observations
         {
             var dependents = DependentsOf(jp.Field);
             foreach (var property in _getterStack.Value)
+            {
                 dependents.Add(property);
+            }
 
             return jp.Execute();
         }
@@ -56,23 +54,27 @@ namespace SheepAspect.Commons.Observations
 			    OnChanged((INotifyPropertyChanged) jp.This, jp.Field);
 
                 PropertyChangedEventHandler evHandler = (o, e) => OnChanged((INotifyPropertyChanged)jp.This, jp.Field);
-			        
-			    var observable = jp.Value as INotifyPropertyChanged;
-			    if(observable != null)
-			        observable.PropertyChanged += evHandler;
 
-		        var originalObservable = jp.Field.GetValue(jp.This) as INotifyPropertyChanged;
-			    if(originalObservable != null)
+                if (jp.Value is INotifyPropertyChanged observable)
+                {
+                    observable.PropertyChanged += evHandler;
+                }
+
+                if (jp.Field.GetValue(jp.This) is INotifyPropertyChanged originalObservable)
+                {
                     originalObservable.PropertyChanged -= evHandler;
-		    }
+                }
+            }
 		    jp.Execute();
 	    }
 
         protected virtual void OnChanged(INotifyPropertyChanged inpc, FieldInfo field)
 	    {
 		    foreach(var prop in DependentsOf(field))
-			    Trigger(inpc, prop);
-	    }
+            {
+                Trigger(inpc, prop);
+            }
+        }
 
         protected virtual void Trigger(INotifyPropertyChanged inpc, PropertyInfo prop)
         {
@@ -80,7 +82,9 @@ namespace SheepAspect.Commons.Observations
                 .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(f => f.FieldType == typeof(PropertyChangedEventHandler))
                 .Select(f=> (PropertyChangedEventHandler)f.GetValue(inpc)).Where(x=> x!=null))
+            {
                 handler(inpc, new PropertyChangedEventArgs(prop.Name));
+            }
         }
 
         private IList<PropertyInfo> DependentsOf(FieldInfo field)

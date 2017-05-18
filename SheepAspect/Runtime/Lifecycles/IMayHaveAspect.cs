@@ -1,5 +1,3 @@
-using System;
-
 namespace SheepAspect.Runtime.Lifecycles
 {
     //public interface  IMayHaveAspect

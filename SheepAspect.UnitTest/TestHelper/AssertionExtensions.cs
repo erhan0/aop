@@ -1,6 +1,4 @@
-using System;
 using FluentAssertions.Assertions;
-using FluentAssertions.EventMonitoring;
 
 namespace SheepAspect.UnitTest.TestHelper
 {

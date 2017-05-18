@@ -28,7 +28,7 @@ namespace SheepAspect.Framework
 
         protected override IPointcut CreatePointcut(AspectDefinition aspect, string pointcutName)
         {
-            return SelectAccessorMethods ? aspect.AddPointcut<PropertyMethodPointcut>(pointcutName): aspect.AddPointcut<PropertyPointcut>(pointcutName);
+            return selectAccessorMethods ? aspect.AddPointcut<PropertyMethodPointcut>(pointcutName): aspect.AddPointcut<PropertyPointcut>(pointcutName);
         }
 
         /// <summary>
@@ -42,7 +42,6 @@ namespace SheepAspect.Framework
         /// Will match the getters of all properties with names beginning with 'Is'
         /// </example>
         /// </summary>
-        [Obsolete("Use SelectPropertyMethods instead")]
-        public bool SelectAccessorMethods { get; set; }
+        private bool selectAccessorMethods;
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using SheepAspect.Core;
 using SheepAspect.Helpers;
 
 namespace SheepAspect.Runtime

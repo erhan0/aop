@@ -13,8 +13,10 @@ namespace SheepAspect.Helpers.CecilExtensions
         {
             var cons = type.GetConstructors().Where(x=> !x.IsStatic).ToArray();
             if (cons.Any())
+            {
                 return cons;
-            
+            }
+
             var con = CreateDefaultConstructor(type);
             con.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
 
@@ -52,15 +54,21 @@ namespace SheepAspect.Helpers.CecilExtensions
             while (true)
             {
                 if (baseType.Equals(target))
+                {
                     return true;
+                }
 
                 if (baseType.Interfaces.Contains(target))
+                {
                     return true;
+                }
 
                 if (baseType.BaseType == null)
+                {
                     return false;
+                }
 
-               baseType = baseType.BaseType.Resolve();
+                baseType = baseType.BaseType.Resolve();
             }
         }
 

@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using SheepAspect.AroundAdvising;
 using SheepAspect.Core;
-using SheepAspect.Pointcuts;
 using SheepAspect.Pointcuts.Impl;
 using SheepAspect.Runtime;
 using SheepAspect.UnitTest.Target;

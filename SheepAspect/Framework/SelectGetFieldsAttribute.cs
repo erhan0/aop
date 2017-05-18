@@ -1,4 +1,3 @@
-using System;
 using SheepAspect.Core;
 using SheepAspect.Pointcuts.Impl;
 

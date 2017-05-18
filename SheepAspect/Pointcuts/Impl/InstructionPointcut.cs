@@ -35,7 +35,10 @@ namespace SheepAspect.Pointcuts.Impl
                       {
                           var pointcuts = func();
                           if (pointcuts.Length == 1)
+                          {
                               return pointcuts[0].Match(method, ins);
+                          }
+
                           return pointcuts.Any(c => c.Match(method, ins));
                       });
         }
@@ -43,9 +46,13 @@ namespace SheepAspect.Pointcuts.Impl
         public void WhereNot(TConcrete pointcut)
         {
             if(pointcut._filters.Any())
+            {
                 Where((m, i) => !pointcut.MatchFull(m, i));
+            }
             else
+            {
                 _memberFilter.FilterNot(pointcut._memberFilter);
+            }
         }
 
         public bool Match(TypeDefinition type)

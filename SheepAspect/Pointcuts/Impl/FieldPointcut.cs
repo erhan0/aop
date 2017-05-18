@@ -8,8 +8,8 @@ namespace SheepAspect.Pointcuts.Impl
 {
     public class FieldPointcut : PointcutBase<FieldPointcut>, IFieldPointcut, IWhereLiteral
     {
-        private readonly IList<Func<FieldDefinition, bool>> _filters = new List<Func<FieldDefinition, bool>>();
-        private readonly TypePointcut _typeFilter = new TypePointcut();
+        private readonly IList<Func<FieldDefinition, bool>> filters = new List<Func<FieldDefinition, bool>>();
+        private readonly TypePointcut typeFilter = new TypePointcut();
 
         public void WhereName(StringCriteria name)
         {
@@ -18,15 +18,19 @@ namespace SheepAspect.Pointcuts.Impl
 
         public void WhereNot(FieldPointcut pointcut)
         {
-            if (pointcut._filters.Any())
+            if (pointcut.filters.Any())
+            {
                 Where(f => !pointcut.MatchFull(f));
+            }
             else
-                _typeFilter.WhereNot(pointcut._typeFilter);
+            {
+                typeFilter.WhereNot(pointcut.typeFilter);
+            }
         }
 
         public void WhereInType(TypePointcut crit)
         {
-            _typeFilter.WhereAny(crit);
+            typeFilter.WhereAny(crit);
         }
 
         public void WhereType(TypePointcut crit)
@@ -66,12 +70,14 @@ namespace SheepAspect.Pointcuts.Impl
 
         public override void WhereAny(Func<FieldPointcut[]> func)
         {
-            _typeFilter.Where(type => func().Any(c => c.Match(type)));
+            typeFilter.Where(type => func().Any(c => c.Match(type)));
             Where(field =>
                       {
                           var pointcuts = func();
                           if (pointcuts.Length == 1)
+                          {
                               return pointcuts[0].Match(field);
+                          }
 
                           return pointcuts.Any(c => c.MatchFull(field));
                       });
@@ -79,27 +85,27 @@ namespace SheepAspect.Pointcuts.Impl
 
         public void Where(Func<FieldDefinition, bool> condition)
         {
-            _filters.Add(condition);
+            filters.Add(condition);
         }
         
         public bool Match(TypeDefinition type)
         {
-            return _typeFilter.Match(type);
+            return typeFilter.Match(type);
         }
 
         public bool MatchFull(TypeDefinition type)
         {
-            return _typeFilter.MatchFull(type);
+            return typeFilter.MatchFull(type);
         }
 
         public bool Match(FieldDefinition field)
         {
-            return _filters.All(f => f(field));
+            return filters.All(f => f(field));
         }
 
         public bool MatchFull(FieldDefinition field)
         {
-            return Match(field.DeclaringType) && _filters.All(f => f(field));
+            return Match(field.DeclaringType) && filters.All(f => f(field));
         }
 
         public void WhereLiteral(string value)

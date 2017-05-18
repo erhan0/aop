@@ -23,9 +23,13 @@ namespace SheepAspect.Helpers
 
             System.Text.RegularExpressions.Regex regex;
             if (caseSensitive)
-	        regex = new System.Text.RegularExpressions.Regex(sb.ToString(), System.Text.RegularExpressions.RegexOptions.None);
+            {
+                regex = new System.Text.RegularExpressions.Regex(sb.ToString(), System.Text.RegularExpressions.RegexOptions.None);
+            }
             else
-	        regex = new System.Text.RegularExpressions.Regex(sb.ToString(), System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            {
+                regex = new System.Text.RegularExpressions.Regex(sb.ToString(), System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            }
 
             return regex.IsMatch(text);
         }

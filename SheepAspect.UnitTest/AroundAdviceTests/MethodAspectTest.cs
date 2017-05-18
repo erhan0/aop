@@ -3,7 +3,6 @@ using NUnit.Framework;
 using SheepAspect.AroundAdvising;
 using SheepAspect.Core;
 using SheepAspect.Helpers;
-using SheepAspect.Pointcuts;
 using SheepAspect.Pointcuts.Impl;
 using SheepAspect.Runtime;
 using SheepAspect.UnitTest.TestHelper;

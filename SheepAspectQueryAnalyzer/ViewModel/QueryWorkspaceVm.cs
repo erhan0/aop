@@ -48,7 +48,9 @@ namespace SheepAspectQueryAnalyzer.ViewModel
         {
             var txt = RequestSelectedQueryText();
             if (string.IsNullOrEmpty(txt))
+            {
                 txt = QueryText;
+            }
 
             var runner = new QueryRunner(Result, Application.Current.Dispatcher);
             using (var logWriter = Output.StartStopwatchWriter())

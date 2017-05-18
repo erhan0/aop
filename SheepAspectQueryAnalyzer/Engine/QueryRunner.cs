@@ -51,7 +51,10 @@ namespace SheepAspectQueryAnalyzer.Engine
 
             var resolver = new DefaultAssemblyResolver();
             foreach(var dir in assemblyFileNames.Select(Path.GetDirectoryName))
+            {
                 resolver.AddSearchDirectory(dir);
+            }
+
             var readerParams = new ReaderParameters {AssemblyResolver = resolver};
 
             var assemblies = assemblyFileNames.AsParallel().Select(filename =>
@@ -79,7 +82,9 @@ namespace SheepAspectQueryAnalyzer.Engine
                             .Select(t => new CodeTree.TypeNode(t.Key, t.Select(
                                 m => CreateNodeForMethod(propertiesMap, m.Key, m)))))
                     )
+                {
                     continue;
+                }
 
                 if (QueryPointcut<IMethodPointcut, MethodDefinition>(logger, assemblies, pointcutKv,
                     (types, pointcut) => _queryEngine.QueryMethods(types, pointcut),
@@ -88,14 +93,18 @@ namespace SheepAspectQueryAnalyzer.Engine
                             .Select(t => new CodeTree.TypeNode(t.Key, t.Select(
                                 m => CreateNodeForMethod(propertiesMap, m)))))
                     )
+                {
                     continue;
+                }
 
                 if (QueryPointcut<ITypePointcut, TypeDefinition>(logger, assemblies, pointcutKv,
                     (types, pointcut) => _queryEngine.QueryTypes(types, pointcut),
                     types => 
                         types.Select(t => new CodeTree.TypeNode(t, null)))
                     )
+                {
                     continue;
+                }
             }
         }
 
@@ -109,9 +118,14 @@ namespace SheepAspectQueryAnalyzer.Engine
                 var propNode = propertiesMap.GetOrPut(prop, () => new CodeTree.PropertyNode(prop));
                 
                 if(method.IsGetter)
+                {
                     propNode.AddGetter(instrNodes);
+                }
                 else
+                {
                     propNode.AddSetter(instrNodes);
+                }
+
                 return propNode;
             }
 
@@ -128,7 +142,9 @@ namespace SheepAspectQueryAnalyzer.Engine
         {
             var tPointcut = pointcut.Value as TPointcut;
             if(tPointcut == null)
+            {
                 return false;
+            }
 
             Dictionary<AssemblyDefinition, TItem[]> filteredAsmTypes;
 

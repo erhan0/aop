@@ -38,7 +38,9 @@ namespace SheepAspect.Tasks
                                  AppDomainIsolatedDiscoveryRunner;
 
                     if (!runner.Process(ConfigFile, Log, out weavedFiles))
+                    {
                         return false;
+                    }
                 }
                 finally
                 {
