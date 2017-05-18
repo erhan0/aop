@@ -5,7 +5,7 @@ using SheepAspect.Compile;
 
 namespace SheepAspect.Tasks
 {
-    public class AppDomainIsolatedDiscoveryRunner: MarshalByRefObject
+    public class AppDomainIsolatedDiscoveryRunner : MarshalByRefObject
     {
         public bool Process(string configFile, TaskLoggingHelper logger, out string[] weavedFiles)
         {
@@ -17,13 +17,13 @@ namespace SheepAspect.Tasks
 
                 var files = new List<string>();
                 new AspectCompiler(settings)
-                    {
-                        FileNameTransform = name =>
-                                                {
-                                                    files.Add(name);
-                                                    return TargetFileName(name);
-                                                }
-                    }.Weave(disco);
+                {
+                    FileNameTransform = name =>
+                                            {
+                                                files.Add(name);
+                                                return TargetFileName(name);
+                                            }
+                }.Weave(disco);
 
                 weavedFiles = files.ToArray();
                 return true;
@@ -37,7 +37,7 @@ namespace SheepAspect.Tasks
 
                 return false;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e.Message);
                 return false;

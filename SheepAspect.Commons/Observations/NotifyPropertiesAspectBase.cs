@@ -14,8 +14,8 @@ namespace SheepAspect.Commons.Observations
     {
         protected abstract void TargetTypes();
 
-        private readonly ThreadLocal<Stack<PropertyInfo>> _getterStack = new ThreadLocal<Stack<PropertyInfo>>(() => new Stack<PropertyInfo>(1));
-        private readonly IDictionary<FieldInfo, IList<PropertyInfo>> _fieldDependents = new Dictionary<FieldInfo, IList<PropertyInfo>>();
+        private readonly ThreadLocal<Stack<PropertyInfo>> getterStack = new ThreadLocal<Stack<PropertyInfo>>(() => new Stack<PropertyInfo>(1));
+        private readonly IDictionary<FieldInfo, IList<PropertyInfo>> fieldDependents = new Dictionary<FieldInfo, IList<PropertyInfo>>();
 
         [Around]
         [SelectProperties("Public & InType:@TargetTypes")]
@@ -23,12 +23,12 @@ namespace SheepAspect.Commons.Observations
         {
             try
             {
-                _getterStack.Value.Push(jp.Property);
+                getterStack.Value.Push(jp.Property);
                 return jp.Execute();
             }
             finally
             {
-                _getterStack.Value.Pop();
+                getterStack.Value.Pop();
             }
         }
 
@@ -37,7 +37,7 @@ namespace SheepAspect.Commons.Observations
         public virtual object OnFieldGet(GetFieldJointPoint jp)
         {
             var dependents = DependentsOf(jp.Field);
-            foreach (var property in _getterStack.Value)
+            foreach (var property in getterStack.Value)
             {
                 dependents.Add(property);
             }
@@ -89,7 +89,7 @@ namespace SheepAspect.Commons.Observations
 
         private IList<PropertyInfo> DependentsOf(FieldInfo field)
         {
-            return _fieldDependents.GetOrPut(field, () => new List<PropertyInfo>());
+            return fieldDependents.GetOrPut(field, () => new List<PropertyInfo>());
         }
     }
 }

@@ -22,16 +22,16 @@ namespace SheepAspect.Runtime
 
         internal new class StaticPart: JointPointBase.StaticPart
         {
-            private readonly PropertyInfo _property;
+            private readonly PropertyInfo property;
 
             public StaticPart(PropertyInfo property, AdviceInvoker advice, AdviceCallback callback) : base(advice, callback)
             {
-                _property = property;
+                this.property = property;
             }
 
             public override IJointPoint CreateJoinPoint(object instance, object target, object[] args)
             {
-                return new PropertySetJointPoint(_property, Callback, instance, args);
+                return new PropertySetJointPoint(property, Callback, instance, args);
             }
         }
     }

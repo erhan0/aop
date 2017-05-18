@@ -14,7 +14,7 @@ namespace SheepAspect.LifecycleAdvising
     {
         private readonly ILProcessor il;
         private readonly Instruction instruction;
-        private readonly TypeReference _aspectType;
+        private readonly TypeReference aspectType;
 
         private IList<Instruction> beforeInstructions = new List<Instruction>();
         private IList<Instruction> affectedInstructions = new List<Instruction>();
@@ -34,7 +34,7 @@ namespace SheepAspect.LifecycleAdvising
         public PerFlowLifecycleWeaver(MethodDefinition targetMethod, Instruction instruction, Type aspectType) : base(targetMethod)
         {
             this.instruction = instruction;
-            _aspectType = Module.Import(aspectType);
+            this.aspectType = Module.Import(aspectType);
             il = targetMethod.Body.GetILProcessor();
         }
 
@@ -138,14 +138,14 @@ namespace SheepAspect.LifecycleAdvising
 
         public void AppendProlog()
         {
-            il.Append(OpCodes.Ldtoken, method.Module.Import(_aspectType));
+            il.Append(OpCodes.Ldtoken, method.Module.Import(aspectType));
             il.Append(OpCodes.Call, method.Module.ImportMethod<Type>("GetTypeFromHandle"));
             il.Append(OpCodes.Call, method.Module.ImportMethod(typeof(PerCFlowAspectLifecycle), "Push"));
         }
 
         public void AppendEpilog()
         {
-            il.Append(OpCodes.Ldtoken, method.Module.Import(_aspectType));
+            il.Append(OpCodes.Ldtoken, method.Module.Import(aspectType));
             il.Append(OpCodes.Call, method.Module.ImportMethod<Type>("GetTypeFromHandle"));
             il.Append(OpCodes.Call, method.Module.ImportMethod(typeof(PerCFlowAspectLifecycle), "Pop"));
         }

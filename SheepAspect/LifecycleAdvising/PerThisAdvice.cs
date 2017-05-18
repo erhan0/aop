@@ -11,28 +11,28 @@ namespace SheepAspect.LifecycleAdvising
 {
     public class PerThisAdvice: AdviceBase
     {
-        private readonly Type _aspectType;
-        private readonly AroundAdvice _aroundAdvice;
+        private readonly Type aspectType;
+        private readonly AroundAdvice aroundAdvice;
 
         public PerThisAdvice(IEnumerable<IPointcut> pointcuts, Type aspectType)
             : base(pointcuts)
         {
             var lifecycleAspectType = typeof (PerThisLifecycleAspect<>).MakeGenericType(aspectType);
-            _aspectType = aspectType;
-            _aroundAdvice = new AroundAdvice(pointcuts, lifecycleAspectType.GetMethod("Bind")){Priority = 900};
+            this.aspectType = aspectType;
+            aroundAdvice = new AroundAdvice(pointcuts, lifecycleAspectType.GetMethod("Bind")){Priority = 900};
         }
 
         public override string FullName
         {
             get
             {
-                return string.Format("PerThis/{0}", _aspectType);
+                return string.Format("PerThis/{0}", aspectType);
             }
         }
 
         public override IEnumerable<IWeaver> GetWeavers(TypeDefinition type)
         {
-            throw new UnsupportedPointcutToAdviseException(type, "PerFlow ({0})".FormatWith(_aspectType.FullName), "Around");
+            throw new UnsupportedPointcutToAdviseException(type, "PerFlow ({0})".FormatWith(aspectType.FullName), "Around");
         }
 
         public override IEnumerable<IWeaver> GetWeavers(MethodDefinition method)
@@ -40,7 +40,7 @@ namespace SheepAspect.LifecycleAdvising
             if (!method.IsStatic)
             {
                 //yield return new PerThisLifecycleWeaver(method.DeclaringType);
-                foreach (var weaver in _aroundAdvice.GetWeavers(method))
+                foreach (var weaver in aroundAdvice.GetWeavers(method))
                 {
                     yield return weaver;
                 }
@@ -52,7 +52,7 @@ namespace SheepAspect.LifecycleAdvising
             if (!method.IsStatic)
             {
                 //yield return new PerThisLifecycleWeaver(method.DeclaringType);
-                foreach (var weaver in _aroundAdvice.GetWeavers(method, instruction))
+                foreach (var weaver in aroundAdvice.GetWeavers(method, instruction))
                 {
                     yield return weaver;
                 }
@@ -65,7 +65,7 @@ namespace SheepAspect.LifecycleAdvising
                 && (property.SetMethod == null || !property.SetMethod.IsStatic))
             {
                 //yield return new PerThisLifecycleWeaver(property.DeclaringType);
-                foreach (var weaver in _aroundAdvice.GetWeavers(property))
+                foreach (var weaver in aroundAdvice.GetWeavers(property))
                 {
                     yield return weaver;
                 }
