@@ -21,7 +21,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
 
         protected override void SetupAspect(AspectDefinition aspect)
         {
-            _advice = null;
+            advice = null;
             var pointcut = CreatePointcuts<CallMethodPointcut>(aspect, "SheepPoint", 
                 @"Method: ((Name: 'Substring' & InType: Name:'String') | InType:Name:'*Callee')
                 & FromMethod:InType:Name:'CallMethodTestTarget*'");
@@ -34,29 +34,29 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
             aspect.Advise(new AroundAdvice(pointcut2, GetAspectMethod("MockAdvice2")));
         }
 
-        private static Func<CallMethodJointPoint, object> _advice;
+        private static Func<CallMethodJointPoint, object> advice;
         public object MockAdvice(CallMethodJointPoint jp)
         {
-            return _advice(jp);
+            return advice(jp);
         }
 
-        private static Func<CallMethodJointPoint, object> _advice2;
+        private static Func<CallMethodJointPoint, object> advice2;
         public object MockAdvice2(CallMethodJointPoint jp)
         {
-            return _advice2(jp);
+            return advice2(jp);
         }
 
         [Assert]
         public void CanProceedAndIntercept()
         {
-            _advice = j => "advised " + j.Execute();
+            advice = j => "advised " + j.Execute();
             Assert.AreEqual("Called advised A", Target.FirstLetter("Abcde"));
         }
 
         [Assert]
         public void CanProceedWithAlteredArgs()
         {
-            _advice = j =>
+            advice = j =>
             {
                 j.Args[1] = 3;
                 return j.Execute();
@@ -67,7 +67,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanProceedWithAlteredTarget()
         {
-            _advice = j =>
+            advice = j =>
             {
                 j.Target = "Mnopq";
                 return j.Execute();
@@ -78,7 +78,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanAccessGenericFromNestedClass()
         {
-            _advice = j =>
+            advice = j =>
             {
                 return "advised " + j.Execute();
             };
@@ -88,7 +88,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanHandleOpenGenericMethod()
         {
-            _advice = j =>
+            advice = j =>
             {
                 j.Method.GetGenericArguments().Should().Equal(typeof(int), typeof(string));
                 j.CallingMethod.GetGenericArguments().Should().Equal(typeof(int), typeof(string));
@@ -100,7 +100,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanHandleNestedOpenGenericOnMethod()
         {
-            _advice = j =>
+            advice = j =>
             {
                 j.Method.GetGenericArguments().Should().Equal(typeof(IList<int>), typeof(IList<string>));
                 j.CallingMethod.GetGenericArguments().Should().Equal(typeof(int), typeof(string));
@@ -112,7 +112,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanHandleOpenGenericsArray()
         {
-            _advice = j =>
+            advice = j =>
             {
                 j.Method.GetGenericArguments().Should().Equal(typeof(int[]), typeof(string[]));
                 j.CallingMethod.GetGenericArguments().Should().Equal(typeof(int), typeof(string));
@@ -124,8 +124,8 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanPutMultipleAdvicesOnSameJoinPoint()
         {
-            _advice = j => "<" + j.Execute() + ">";
-            _advice2 = j => "(" + j.Execute() + ")";
+            advice = j => "<" + j.Execute() + ">";
+            advice2 = j => "(" + j.Execute() + ")";
 
             Assert.AreEqual("Called (<A>)", Target.FirstLetter_DoubleAdvised("Abcde"));
         }

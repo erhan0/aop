@@ -4,11 +4,11 @@ namespace SheepAspect.UnitTest.ImplementInterfaceTests
 {
     public class TestLambda
     {
-        private MixinsImplementationBinding<ImplementInterfaceTest, ITestInterface> _binding;
+        private MixinsImplementationBinding<ImplementInterfaceTest, ITestInterface> binding;
 
         public void Haha()
         {
-            _binding = new MixinsImplementationBinding<ImplementInterfaceTest, ITestInterface>(null, this, new object[0],
+            binding = new MixinsImplementationBinding<ImplementInterfaceTest, ITestInterface>(null, this, new object[0],
                                                                                            Blah);
         }
 

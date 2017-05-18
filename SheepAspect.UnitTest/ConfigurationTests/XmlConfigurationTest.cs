@@ -8,24 +8,24 @@ namespace SheepAspect.UnitTest.ConfigurationTests
     [TestFixture]
     public class XmlConfigurationTest
     {
-        private XmlCompilerSettings _config;
+        private XmlCompilerSettings config;
 
         [SetUp]
         public void ReadXml()
         {
-            _config = new XmlCompilerSettings("ConfigurationTests/TestCfg.xml");
+            config = new XmlCompilerSettings("ConfigurationTests/TestCfg.xml");
         }
 
         [Assert]
         public void CanReturnCorrectNumberOfAspectFiles()
         {
-            _config.AspectAssemblyFiles.Should().HaveCount(6);
+            config.AspectAssemblyFiles.Should().HaveCount(6);
         }
 
         [Assert]
         public void ParseAspectFiles()
         {
-            _config.AspectAssemblyFiles
+            config.AspectAssemblyFiles
                 .Should().Contain("aspect1.dll")
                 .And.Contain("aspect2.dll");
         }
@@ -33,7 +33,7 @@ namespace SheepAspect.UnitTest.ConfigurationTests
         [Assert]
         public void ParseAspectDirs()
         {
-            _config.AspectAssemblyFiles
+            config.AspectAssemblyFiles
                 .Should().Contain(@"aspectDir1\blah1*.dll")
                 .And.Contain(@"aspectDir1\blah1*.exe")
                 .And.Contain(@"aspectDir2/blah2*.dll")
@@ -43,13 +43,13 @@ namespace SheepAspect.UnitTest.ConfigurationTests
         [Assert]
         public void CanReturnCorrectNumberOfTargetFiles()
         {
-            _config.TargetAssemblyFiles.Should().HaveCount(6);
+            config.TargetAssemblyFiles.Should().HaveCount(6);
         }
 
         [Assert]
         public void ParseTargetFiles()
         {
-            _config.TargetAssemblyFiles
+            config.TargetAssemblyFiles
                 .Should().Contain("weave1.dll")
                 .And.Contain("weave2.dll");
         }
@@ -57,7 +57,7 @@ namespace SheepAspect.UnitTest.ConfigurationTests
         [Assert]
         public void ParseTargetDirs()
         {
-            _config.TargetAssemblyFiles
+            config.TargetAssemblyFiles
                 .Should().Contain(@"weaveDir1\blah1*.dll")
                 .And.Contain(@"weaveDir1\blah1*.exe")
                 .And.Contain(@"weaveDir2/blah2*.dll")

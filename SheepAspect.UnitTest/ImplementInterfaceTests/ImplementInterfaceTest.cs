@@ -11,7 +11,7 @@ namespace SheepAspect.UnitTest.ImplementInterfaceTests
 {
     public class ImplementInterfaceTest: AspectTestBase
     {
-        private static Mock<ITestInterface> _interfaceMock;
+        private static Mock<ITestInterface> interfaceMock;
 
         protected override Type TargetType()
         {
@@ -20,7 +20,7 @@ namespace SheepAspect.UnitTest.ImplementInterfaceTests
 
         protected override void SetupAspect(AspectDefinition aspect)
         {
-            _interfaceMock = new Mock<ITestInterface>();
+            interfaceMock = new Mock<ITestInterface>();
             aspect.Advise(
                 new DeclareMixinFromMethodAdvice(CreatePointcuts<TypePointcut>(aspect, "TestPointcut", "Name:'TestTarget'"),
                     GetAspectMethod("MixinTestAdvice"), null, true));
@@ -28,14 +28,14 @@ namespace SheepAspect.UnitTest.ImplementInterfaceTests
 
         public ITestInterface MixinTestAdvice()
         {
-            return _interfaceMock.Object;
+            return interfaceMock.Object;
         }
 
         [Assert]
         public void CanMixinMethod()
         {
             var stubResult = new object();
-            _interfaceMock.Setup(x => x.SomeMethod(123)).Returns(stubResult);
+            interfaceMock.Setup(x => x.SomeMethod(123)).Returns(stubResult);
             var casted = (ITestInterface)Target;
             casted.SomeMethod(123).Should().Be(stubResult);
         }

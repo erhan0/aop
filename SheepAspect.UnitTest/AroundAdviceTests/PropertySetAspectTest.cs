@@ -14,28 +14,28 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
     {
         protected override Type TargetType()
         {
-            return typeof (SomeClass);
+            return typeof(SomeClass);
         }
 
         protected override void SetupAspect(AspectDefinition aspect)
         {
-            _advice = null;
+            advice = null;
             var pointcuts = CreatePointcuts<PropertyMethodPointcut>(aspect, "SheepPoint", "Setter & Name:'SomeProperty'");
             aspect.Advise(new AroundAdvice(pointcuts, GetAspectMethod("MockAdvice")));
         }
 
-        private static Action<PropertySetJointPoint> _advice;
+        private static Action<PropertySetJointPoint> advice;
         public void MockAdvice(PropertySetJointPoint jp)
         {
-            _advice(jp);
+            advice(jp);
         }
 
         [Assert]
         public void CanProceedAndIntercept()
         {
-            _advice = j =>
+            advice = j =>
                           {
-                              j.Value = (int)j.Value*10;
+                              j.Value = (int)j.Value * 10;
                               j.Proceed();
                           };
             Target.SomeProperty = 20;
@@ -45,7 +45,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanIgnoreCompletely()
         {
-            _advice = j => { };
+            advice = j => { };
 
             Target.SomeProperty = 10;
             Assert.AreEqual(0, Target.SomeProperty);

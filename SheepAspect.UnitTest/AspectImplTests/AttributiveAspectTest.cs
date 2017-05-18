@@ -18,45 +18,27 @@ namespace SheepAspect.UnitTest.AspectImplTests
     [TestFixture]
     public class AttributiveAspectTest
     {
-        private AroundAdvice _advice;
+        private AroundAdvice advice;
 
         [SetUp]
         public void Setup()
         {
-            _advice = (AroundAdvice) new AttributiveAspectProvider().GetDefinition(typeof(TestWithOnMemberBoundaryAttribute)).Advices.Single();
+            advice = (AroundAdvice) new AttributiveAspectProvider().GetDefinition(typeof(TestWithOnMemberBoundaryAttribute)).Advices.Single();
         }
 
         [Assert]
         public void CanPickOutDecoratedMethod()
         {
-            _advice.Pointcuts.OfType<MethodPointcut>().Should().Contain(p=> p.MatchFull(GetMethod("DecoratedMethod")));
+            advice.Pointcuts.OfType<MethodPointcut>().Should().Contain(p=> p.MatchFull(GetMethod("DecoratedMethod")));
         }
 
         [Assert]
         public void CanPickOutDecoratedProperty()
         {
             var property = GetProperty("DecoratedProperty");
-            _advice.Pointcuts.OfType<PropertyPointcut>()
+            advice.Pointcuts.OfType<PropertyPointcut>()
                 .Should().Contain(p => p.MatchFull(property));
         }
-
-        //[Assert]
-        //public void CanPickOutDecoratedPropertyGetter()
-        //{
-        //    var property = GetProperty("DecoratedPropertyGetter");
-        //    _advice.Pointcuts.OfType<PropertyPointcut>()
-        //        .Should().Contain(p => p.MatchFull(property.GetMethod))
-        //        .And.NotContain(p => p.MatchFull(property.SetMethod));
-        //}
-
-        //[Assert]
-        //public void CanPickOutDecoratedPropertySetter()
-        //{
-        //    var property = GetProperty("DecoratedPropertySetter");
-        //    _advice.Pointcuts.OfType<PropertyPointcut>()
-        //        .Should().NotContain(p => p.MatchFull(property.GetMethod))
-        //        .And.Contain(p => p.MatchFull(property.SetMethod));
-        //}
 
         [Assert]
         public void AspectInstanceShouldContainAttributeInformation()

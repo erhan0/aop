@@ -20,28 +20,28 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
 
         protected override void SetupAspect(AspectDefinition aspect)
         {
-            _advice = null;
+            advice = null;
             var pointcut = CreatePointcuts<MethodPointcut>(aspect, "SheepPoint", "Name: ('SimpleConcat'|'Generic*') & InType:Name:'MethodTestTarget*'");
             aspect.Advise(new AroundAdvice(pointcut, GetAspectMethod("MockAdvice")));
         }
 
-        private static Func<MethodJointPoint, object> _advice;
+        private static Func<MethodJointPoint, object> advice;
         public object MockAdvice(MethodJointPoint jp)
         {
-            return _advice(jp);
+            return advice(jp);
         }
 
         [Assert]
         public void CanProceedAndIntercept()
         {
-            _advice = j => j.Execute() + " advised";
+            advice = j => j.Execute() + " advised";
             Assert.AreEqual("Hello Int32 advised", Target.SimpleConcat("Hello"));
         }
 
         [Assert]
         public void CanProceedWithAlteredArgs()
         {
-            _advice = j => { 
+            advice = j => { 
                 j.Args[0] = "Hi";
                 return j.Execute();
             };
@@ -51,7 +51,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanHandleGenericMethod()
         {
-            _advice = j => j.Execute() + " advised";
+            advice = j => j.Execute() + " advised";
             Assert.AreEqual("Hello Int32,String advised", Target.GenericConcat<int, string>("Hello"));
         }
 

@@ -20,22 +20,22 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
 
         protected override void SetupAspect(AspectDefinition aspect)
         {
-            _advice = null;
+            advice = null;
             var pointcut = CreatePointcuts<GetFieldPointcut>(aspect, "SheepPoint", "Field: (Name: '_some*')");
             aspect.Advise(new AroundAdvice(pointcut, GetAspectMethod("MockAdvice")));
         }
 
-        private static Func<GetFieldJointPoint, int> _advice;
+        private static Func<GetFieldJointPoint, int> advice;
         public object MockAdvice(GetFieldJointPoint jp)
         {
-            return _advice(jp);
+            return advice(jp);
         }
 
         [Assert]
         public void CanProceedAndIntercept()
         {
             Target.SetField(10);
-            _advice = j => j.Execute().As<int>() + 3;
+            advice = j => j.Execute().As<int>() + 3;
 
             Assert.AreEqual(130, Target.GetFieldTimes(10));
         }
@@ -44,7 +44,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         public void CanInterceptCompletely()
         {
             Target.SomeProperty = 10;
-            _advice = j =>
+            advice = j =>
             {
                 return 100;
             };
