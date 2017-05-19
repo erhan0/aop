@@ -38,8 +38,8 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
                               j.Value = (int)j.Value * 10;
                               j.Proceed();
                           };
-            Target.SomeProperty = 20;
-            Assert.AreEqual(200, Target.SomeProperty);
+            target.SomeProperty = 20;
+            Assert.AreEqual(200, target.SomeProperty);
         }
 
         [Assert]
@@ -47,8 +47,8 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         {
             advice = j => { };
 
-            Target.SomeProperty = 10;
-            Assert.AreEqual(0, Target.SomeProperty);
+            target.SomeProperty = 10;
+            Assert.AreEqual(0, target.SomeProperty);
         }
     }
 }

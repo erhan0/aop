@@ -14,7 +14,7 @@ namespace SheepAspect.UnitTest.SaqlTests
         [Assert]
         public void HenTest()
         {
-            var str = "";
+            var str = string.Empty;
             var lexer = new PointcutLexer(new ANTLRStringStream(str));
             var parser = new PointcutParser(new CommonTokenStream(lexer));
 

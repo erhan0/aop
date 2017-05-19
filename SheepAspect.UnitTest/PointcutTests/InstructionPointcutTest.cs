@@ -28,16 +28,16 @@ namespace SheepAspect.UnitTest.PointcutTests
 
         public class Sut
         {
-            private string _fieldOne;
+            private string fieldOne;
 
             public string PropertyOne
             {
-                get { return _fieldOne; }
+                get { return fieldOne; }
             }
 
             public string MethodOne()
             {
-                return _fieldOne;
+                return fieldOne;
             }
         }
     }

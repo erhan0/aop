@@ -13,26 +13,26 @@ namespace SheepAspect.UnitTest.TestHelper
     {
         protected abstract Type TargetType();
 
-        protected static dynamic Target;
-        private static MockAspectProvider _mockAspectProvider;
-        private AspectDefinition _aspect;
+        protected static dynamic target;
+        private static MockAspectProvider mockAspectProvider;
+        private AspectDefinition aspect;
 
         [Arrange]
         public void Arrange()
         {
-            _mockAspectProvider = new MockAspectProvider();
-            AspectRuntime.Provider = _mockAspectProvider;
+            mockAspectProvider = new MockAspectProvider();
+            AspectRuntime.Provider = mockAspectProvider;
 
-            _aspect = new AspectDefinition(AspectType());
-            SetupAspect(_aspect);
+            aspect = new AspectDefinition(AspectType());
+            SetupAspect(aspect);
 
-            _mockAspectProvider.AddDefinition(_aspect, LifecycleProvider());
+            mockAspectProvider.AddDefinition(aspect, LifecycleProvider());
         }
 
         [Act]
         public void Act()
         {
-            Target = WeaveTestHelper.WeaveAndLoadType(GetType(), _aspect, TargetType());
+            target = WeaveTestHelper.WeaveAndLoadType(GetType(), aspect, TargetType());
         }
 
         [TearDown]

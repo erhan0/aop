@@ -14,7 +14,7 @@ namespace SheepAspect.UnitTest.ImplementInterfaceTests
 
         private ITestInterface Blah(ImplementInterfaceTest arg)
         {
-            return arg == null ? null : arg.MixinTestAdvice();
+            return arg?.MixinTestAdvice();
         }
     }
 }

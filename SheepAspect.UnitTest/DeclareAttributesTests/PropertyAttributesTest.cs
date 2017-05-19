@@ -30,7 +30,7 @@ namespace SheepAspect.UnitTest.DeclareAttributesTests
         [Assert]
         public void AttributeShouldBeCopiedToTargetMethod()
         {
-            Type type = Target.GetType();
+            Type type = target.GetType();
             var attrs = type.GetProperty("TestProperty").GetCustomAttributesData();
             attrs.Should().HaveCount(1);
             attrs.First().Constructor.DeclaringType.Should().Be(typeof(MyTestAttribute));

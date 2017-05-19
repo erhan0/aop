@@ -40,7 +40,7 @@ namespace SheepAspect.UnitTest.SaqlTests
         public void visit(ITree node)
         {
             // Flatten this level of the tree if it has no children
-            bool flatten = /*true*/ false;
+            bool flatten = false;
             ITree node2;
             
             for (node2 = node; node2 != null; node2 = node2.getNextSibling())
@@ -98,7 +98,7 @@ namespace SheepAspect.UnitTest.SaqlTests
 
             if (flatten)
             {
-                Console.Out.WriteLine("");
+                Console.Out.WriteLine();
             }
         }
     }

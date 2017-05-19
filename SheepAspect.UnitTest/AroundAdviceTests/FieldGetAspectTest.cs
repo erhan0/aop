@@ -34,21 +34,21 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         [Assert]
         public void CanProceedAndIntercept()
         {
-            Target.SetField(10);
+            target.SetField(10);
             advice = j => j.Execute().As<int>() + 3;
 
-            Assert.AreEqual(130, Target.GetFieldTimes(10));
+            Assert.AreEqual(130, target.GetFieldTimes(10));
         }
 
         [Assert]
         public void CanInterceptCompletely()
         {
-            Target.SomeProperty = 10;
+            target.SomeProperty = 10;
             advice = j =>
             {
                 return 100;
             };
-            Assert.AreEqual(1000, Target.GetFieldTimes(10));
+            Assert.AreEqual(1000, target.GetFieldTimes(10));
         }
     }
 }

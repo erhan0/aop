@@ -27,10 +27,10 @@ namespace SheepAspect.UnitTest.LifecycleTests
             var target2 = CreateTarget();
             new[]
                 {
-                    Target.MethodB(),
-                    Target.MethodA(),
-                    Target.MethodB(),
-                    Target.MethodA(),
+                    target.MethodB(),
+                    target.MethodA(),
+                    target.MethodB(),
+                    target.MethodA(),
 
                     target2.MethodB(),
                     target2.MethodA(),

@@ -7,14 +7,14 @@ namespace SheepAspect.UnitTest.TestHelper
 {
     public class MockAspectProvider: AttributiveAspectProvider
     {
-        private readonly IDictionary<Type, AspectDefinition> _aspects = new Dictionary<Type, AspectDefinition>();
-        private readonly IDictionary<Type, ILifecycleProvider>  _lifecycleProviders = new Dictionary<Type, ILifecycleProvider>();
-        private readonly IDictionary<Type, IAspectFactory> _factories = new Dictionary<Type, IAspectFactory>();
+        private readonly IDictionary<Type, AspectDefinition> aspects = new Dictionary<Type, AspectDefinition>();
+        private readonly IDictionary<Type, ILifecycleProvider>  lifecycleProviders = new Dictionary<Type, ILifecycleProvider>();
+        private readonly IDictionary<Type, IAspectFactory> factories = new Dictionary<Type, IAspectFactory>();
 
         public override AspectDefinition GetDefinition(Type type)
         {
             AspectDefinition definition;
-            if (_aspects.TryGetValue(type, out definition))
+            if (aspects.TryGetValue(type, out definition))
             {
                 return definition;
             }
@@ -25,7 +25,7 @@ namespace SheepAspect.UnitTest.TestHelper
         public override ILifecycleProvider GetLifecycleProvider(Type aspectType)
         {
             ILifecycleProvider provider;
-            if (!_lifecycleProviders.TryGetValue(aspectType, out provider))
+            if (!lifecycleProviders.TryGetValue(aspectType, out provider))
             {
                 provider = base.GetLifecycleProvider(aspectType);
             }
@@ -37,7 +37,7 @@ namespace SheepAspect.UnitTest.TestHelper
         public override IAspectFactory GetFactory(Type aspectType)
         {
             IAspectFactory factory;
-            if (_factories.TryGetValue(aspectType, out factory))
+            if (factories.TryGetValue(aspectType, out factory))
             {
                 return factory;
             }
@@ -49,13 +49,13 @@ namespace SheepAspect.UnitTest.TestHelper
         {
             lifecycleProvider.RegisterAdvices(aspect);
 
-            _aspects.Add(aspect.Type, aspect);
-            _lifecycleProviders[aspect.Type] =  lifecycleProvider;
+            aspects.Add(aspect.Type, aspect);
+            lifecycleProviders[aspect.Type] =  lifecycleProvider;
         }
 
         public void SetFactory<TAspect>(IAspectFactory factory)
         {
-            _factories[typeof (TAspect)] = factory;
+            factories[typeof (TAspect)] = factory;
         }
     }
 }

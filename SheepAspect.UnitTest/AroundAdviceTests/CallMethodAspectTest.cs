@@ -50,7 +50,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         public void CanProceedAndIntercept()
         {
             advice = j => "advised " + j.Execute();
-            Assert.AreEqual("Called advised A", Target.FirstLetter("Abcde"));
+            Assert.AreEqual("Called advised A", target.FirstLetter("Abcde"));
         }
 
         [Assert]
@@ -61,7 +61,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
                 j.Args[1] = 3;
                 return j.Execute();
             };
-            Assert.AreEqual("Called Abc", Target.FirstLetter("Abcde"));
+            Assert.AreEqual("Called Abc", target.FirstLetter("Abcde"));
         }
 
         [Assert]
@@ -72,7 +72,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
                 j.Target = "Mnopq";
                 return j.Execute();
             };
-            Assert.AreEqual("Called M", Target.FirstLetter("Abcdef"));
+            Assert.AreEqual("Called M", target.FirstLetter("Abcdef"));
         }
 
         [Assert]
@@ -82,7 +82,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
             {
                 return "advised " + j.Execute();
             };
-            Assert.AreEqual("Called advised Int32", Target.CallParentGeneric());
+            Assert.AreEqual("Called advised Int32", target.CallParentGeneric());
         }
         
         [Assert]
@@ -94,7 +94,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
                 j.CallingMethod.GetGenericArguments().Should().Equal(typeof(int), typeof(string));
                 return "advised " + j.Execute();
             };
-            Assert.AreEqual("Called advised Int32,String", Target.CallGeneric<int, string>());
+            Assert.AreEqual("Called advised Int32,String", target.CallGeneric<int, string>());
         }
 
         [Assert]
@@ -106,7 +106,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
                 j.CallingMethod.GetGenericArguments().Should().Equal(typeof(int), typeof(string));
                 return "advised " + j.Execute();
             };
-            Assert.AreEqual("Called advised IList`1,IList`1", Target.CallGenericList<int, string>());
+            Assert.AreEqual("Called advised IList`1,IList`1", target.CallGenericList<int, string>());
         }
 
         [Assert]
@@ -118,7 +118,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
                 j.CallingMethod.GetGenericArguments().Should().Equal(typeof(int), typeof(string));
                 return "advised " + j.Execute();
             };
-            Assert.AreEqual("Called advised Int32[],String[]", Target.CallGenericArray<int, string>());
+            Assert.AreEqual("Called advised Int32[],String[]", target.CallGenericArray<int, string>());
         }
 
         [Assert]
@@ -127,7 +127,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
             advice = j => "<" + j.Execute() + ">";
             advice2 = j => "(" + j.Execute() + ")";
 
-            Assert.AreEqual("Called (<A>)", Target.FirstLetter_DoubleAdvised("Abcde"));
+            Assert.AreEqual("Called (<A>)", target.FirstLetter_DoubleAdvised("Abcde"));
         }
     }
 

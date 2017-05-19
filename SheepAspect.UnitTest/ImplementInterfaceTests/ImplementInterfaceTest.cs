@@ -36,7 +36,7 @@ namespace SheepAspect.UnitTest.ImplementInterfaceTests
         {
             var stubResult = new object();
             interfaceMock.Setup(x => x.SomeMethod(123)).Returns(stubResult);
-            var casted = (ITestInterface)Target;
+            var casted = (ITestInterface)target;
             casted.SomeMethod(123).Should().Be(stubResult);
         }
     }

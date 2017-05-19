@@ -35,7 +35,7 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
         public void CanProceedAndIntercept()
         {
             advice = j => j.Execute() + " advised";
-            Assert.AreEqual("Hello Int32 advised", Target.SimpleConcat("Hello"));
+            Assert.AreEqual("Hello Int32 advised", target.SimpleConcat("Hello"));
         }
 
         [Assert]
@@ -45,21 +45,21 @@ namespace SheepAspect.UnitTest.AroundAdviceTests
                 j.Args[0] = "Hi";
                 return j.Execute();
             };
-            Assert.AreEqual("Hi Int32", Target.SimpleConcat("Hello"));
+            Assert.AreEqual("Hi Int32", target.SimpleConcat("Hello"));
         }
 
         [Assert]
         public void CanHandleGenericMethod()
         {
             advice = j => j.Execute() + " advised";
-            Assert.AreEqual("Hello Int32,String advised", Target.GenericConcat<int, string>("Hello"));
+            Assert.AreEqual("Hello Int32,String advised", target.GenericConcat<int, string>("Hello"));
         }
 
         // BUG: https://sheepaspect.codeplex.com/workitem/11132
         [Assert]
         public void CurrentMethodShouldRetainParameterAttributes()
         {
-            ((object) Target).GetType().GetMethod("SimpleConcat").GetParameters()[0].GetCustomAttributes(
+            ((object) target).GetType().GetMethod("SimpleConcat").GetParameters()[0].GetCustomAttributes(
                 typeof (FooAttribute), true).Should().NotBeEmpty();
         }
     }

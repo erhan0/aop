@@ -19,9 +19,9 @@ namespace SheepAspect.UnitTest.LifecycleTests
         {
             new[]
                 {
-                    Target.MethodA(),
-                    Target.MethodB(),
-                    Target.MethodA()
+                    target.MethodA(),
+                    target.MethodB(),
+                    target.MethodA()
                 }.Should().Equal(0, 1, 2);
         }
     }

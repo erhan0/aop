@@ -9,7 +9,7 @@ namespace SheepAspect.UnitTest.Target
             return something.IndexOf('c');
         }
 
-        private int _someField;
+        private int someField;
         public int SomeProperty { get; set; }
         public string DoSomething()
         {
@@ -18,15 +18,15 @@ namespace SheepAspect.UnitTest.Target
 
         public void SetField(int val)
         {
-            _someField = val;
+            someField = val;
         }
         public int GetField()
         {
-            return _someField;
+            return someField;
         }
         public int GetFieldTimes(int multiplier)
         {
-            return _someField*multiplier;
+            return someField*multiplier;
         }
     }
 }

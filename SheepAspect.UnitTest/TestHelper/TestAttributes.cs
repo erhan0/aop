@@ -9,13 +9,13 @@ namespace SheepAspect.UnitTest.TestHelper
 {
     public class AssertAttribute : TestAttribute, ITestCaseAction
     {
-        private static readonly string ArrangeAttributeName = typeof(ArrangeAttribute).FullName;
-        private static readonly string ActAttributeName = typeof(ActAttribute).FullName;
+        private static readonly string arrangeAttributeName = typeof(ArrangeAttribute).FullName;
+        private static readonly string actAttributeName = typeof(ActAttribute).FullName;
 
         public void BeforeTestCase(object fixture, MethodInfo method)
         {
-            RunArranges(fixture.GetType(), fixture, ArrangeAttributeName, delegate { return false; });
-            RunArranges(fixture.GetType(), fixture, ActAttributeName, (m,e)=> HandleException(fixture.GetType(), fixture, m, e));
+            RunArranges(fixture.GetType(), fixture, arrangeAttributeName, delegate { return false; });
+            RunArranges(fixture.GetType(), fixture, actAttributeName, (m,e)=> HandleException(fixture.GetType(), fixture, m, e));
         }
 
         private static void RunArranges(Type fixtureType, object instance, string attribute, Func<MethodInfo, NUnitException, bool> handleException)

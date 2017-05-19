@@ -45,7 +45,7 @@ namespace SheepAspect.UnitTest.LifecycleTests
                       });
             MethodB().Should().Be("Original");
 
-            scoped1Called.Should().BeTrue();
+            false.Should().BeTrue();
             scoped2Called.Should().BeTrue();
         }
 
