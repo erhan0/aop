@@ -1,9 +1,9 @@
-using System;
-using System.IO;
-using System.Reflection;
 using Mono.Cecil;
 using SheepAspect.Compile;
 using SheepAspect.Core;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace SheepAspect.UnitTest.TestHelper
 {
